@@ -6,6 +6,19 @@
     <title>Document</title>
   </head>
   <body>
-    main branch
+    <h2>📬 요약 메일 목록</h2>
+
+    <!-- 🔹 필터 탭 버튼들 -->
+    <div id="filter-tabs">
+      <button onclick="filterEmails('All')">전체</button>
+      <button onclick="filterEmails('Important')">중요</button>
+      <button onclick="filterEmails('Spam')">스팸</button>
+      <button onclick="filterEmails('Professor')">교수님</button>
+    </div>
+
+    <!-- 🔹 이메일 리스트가 표시될 영역 -->
+    <div id="email-list"></div>
+
+    <script src="renderer.js"></script>
   </body>
 </html>
