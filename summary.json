@@ -1,0 +1,16 @@
+[
+  {
+    "sender": "Alice",
+    "subject": "Finalize meeting",
+    "summary": "Please confirm 3PM meeting tomorrow.",
+    "category": "Important",
+    "time": "Today 3:00PM"
+  },
+  {
+    "sender": "News Bot",
+    "subject": "Daily Update",
+    "summary": "Stock market saw slight drop today.",
+    "category": "Newsletter",
+    "time": "Today 8:00AM"
+  }
+]
