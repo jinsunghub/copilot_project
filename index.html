@@ -3,135 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <title>MailPilot AI</title>
-    <style>
-      body {
-        font-family: sans-serif;
-        margin: 30px;
-        background-color: #f9f9f9;
-      }
-
-      h1 {
-        margin-bottom: 5px;
-      }
-
-      #filter-tabs button {
-        margin-right: 10px;
-        padding: 6px 12px;
-        border: none;
-        border-radius: 8px;
-        background-color: #ddd;
-        cursor: pointer;
-      }
-
-      #filter-tabs button:hover {
-        background-color: #bbb;
-      }
-
-      .email-item {
-        background-color: white;
-        border: 1px solid #ccc;
-        padding: 12px;
-        margin-top: 15px;
-        border-radius: 8px;
-      }
-
-      .badge {
-        display: inline-block;
-        background-color: #444;
-        color: white;
-        font-size: 0.7em;
-        padding: 3px 8px;
-        border-radius: 10px;
-        margin-bottom: 6px;
-      }
-
-      .spam {
-        opacity: 0.5;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1>📬 MailPilot AI</h1>
-    <p>AI 비서가 요약한 메일입니다.</p>
+    <div class="container">
+      <!-- 📌 왼쪽 사이드바 -->
+      <aside class="sidebar">
+        <h2>📨 MailPilot AI</h2>
+        <ul class="nav-menu">
+          <li class="nav-item active">전체 메일</li>
+          <li class="nav-item">중요 메일</li>
+          <li class="nav-item">받은 메일함</li>
+          <li class="nav-item">보낸 메일함</li>
+          <li class="nav-item">내게 쓴 메일</li>
+          <li class="nav-item">스팸</li>
+          <li class="nav-item">키워드 필터</li>
+        </ul>
+      </aside>
 
-    <!-- 🔹 필터 탭 -->
-    <div id="filter-tabs">
-      <button onclick="filterEmails('All')">전체</button>
-      <button onclick="filterEmails('Important')">중요</button>
-      <button onclick="filterEmails('Spam')">스팸</button>
-      <button onclick="filterEmails('Professor')">교수님</button>
+      <!-- 📌 중앙 패널 -->
+      <main class="mail-panel">
+        <!-- 🔍 검색창 -->
+        <input type="text" id="searchInput" placeholder="메일 검색..." />
+
+        <!-- 🔢 개수 표시 -->
+        <div id="mailCount"></div>
+
+        <!-- 📩 메일 리스트 -->
+        <div id="mailList"></div>
+      </main>
+
+      <!-- 📌 오른쪽 상세 보기 -->
+      <section class="detail-panel">
+        <h2 id="emailSubject">메일 내용</h2>
+        <p id="emailFrom"></p>
+        <p id="emailDate"></p>
+        <div id="emailBody"></div>
+      </section>
     </div>
 
-    <!-- 🔹 메일 리스트 -->
-    <div id="email-list"></div>
-
-    <script>
-      const emails = [
-        {
-          sender: "Prof. Kim",
-          subject: "과제 피드백",
-          summary: "보고서에 대한 피드백을 전달합니다.",
-          category: "Professor",
-          priority: "High",
-          isSpam: false,
-          time: "오늘 3:00PM",
-        },
-        {
-          sender: "광고봇",
-          subject: "초특가 세일!",
-          summary: "지금 할인 중인 상품을 확인하세요.",
-          category: "Spam",
-          priority: "Low",
-          isSpam: true,
-          time: "오늘 9:00AM",
-        },
-        {
-          sender: "팀장님",
-          subject: "회의 일정 조율",
-          summary: "수요일 오전 중 회의 일정 잡을 수 있을까요?",
-          category: "Important",
-          priority: "High",
-          isSpam: false,
-          time: "오늘 10:30AM",
-        },
-      ];
-
-      function renderEmails(filteredEmails) {
-        const list = document.getElementById("email-list");
-        list.innerHTML = "";
-
-        filteredEmails.forEach((mail) => {
-          const el = document.createElement("div");
-          el.className = "email-item" + (mail.isSpam ? " spam" : "");
-          el.innerHTML = `
-          <div class="badge">${mail.category}</div><br/>
-          <strong>${mail.sender}</strong> - ${mail.subject}<br/>
-          <p>${mail.summary}</p>
-          <small>${mail.time}</small><br/>
-          ${
-            mail.priority === "High"
-              ? '<span style="color:red;">⚠️ High Priority</span>'
-              : ""
-          }
-        `;
-          list.appendChild(el);
-        });
-      }
-
-      function filterEmails(category) {
-        if (category === "All") {
-          renderEmails(emails);
-        } else if (category === "Spam") {
-          renderEmails(emails.filter((mail) => mail.isSpam));
-        } else {
-          renderEmails(
-            emails.filter((mail) => mail.category === category && !mail.isSpam)
-          );
-        }
-      }
-
-      // 최초 전체 메일 렌더링
-      renderEmails(emails);
-    </script>
+    <!-- 📌 스크립트 연결 -->
+    <script src="script.js"></script>
   </body>
 </html>

@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.nav-item {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background 0.3s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background-color: #374151;
+}
+
+.mail-panel {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.mail-card {
+  background-color: white;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mail-card:hover {
+  background-color: #f0f0f0;
+}
+
+.detail-panel {
+  width: 300px;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-left: 1px solid #ccc;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#mailCount {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #555;
+}
