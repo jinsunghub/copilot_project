@@ -35,19 +35,40 @@ const emails = [
 
 function App() {
   const [filter, setFilter] = useState("All");
+  const [result, setResult] = useState("");
 
   const getFilteredEmails = () => {
     if (filter === "All") return emails;
     if (filter === "Spam") return emails.filter((e) => e.isSpam);
-    return emails.filter(
-      (e) => e.category === filter && !e.isSpam
-    );
+    return emails.filter((e) => e.category === filter && !e.isSpam);
+  };
+
+  const testBackend = () => {
+    fetch("http://127.0.0.1:5000/api/summary", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: "React에서 보낸 테스트 요청입니다." }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("백엔드 응답:", data);
+        setResult(data.summary);
+      })
+      .catch((err) => {
+        console.error("백엔드 요청 실패:", err);
+        setResult("❌ 요청 실패");
+      });
   };
 
   return (
     <div className="app">
       <h1>📬 MailPilot AI</h1>
       <p>AI 비서가 요약한 메일입니다.</p>
+
+      {/* 🔘 백엔드 연결 테스트 버튼 */}
+      <button onClick={testBackend}>✅ 백엔드 연결 테스트</button>
+      {result && <p>👉 백엔드 응답: {result}</p>}
+
       <FilterTabs setFilter={setFilter} />
       <EmailList emails={getFilteredEmails()} />
     </div>
