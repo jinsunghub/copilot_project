@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function GmailSummaryForm() {
+function GmailSummaryForm({ setEmails }) {
   const [email, setEmail] = useState("");
   const [appPassword, setAppPassword] = useState("");
   const [summaries, setSummaries] = useState([]);
@@ -10,17 +10,22 @@ function GmailSummaryForm() {
     e.preventDefault();
     setError("");
     setSummaries([]);
-
+    setEmails([]); // 이메일 리스트 초기화
+  
     try {
       const res = await fetch("http://127.0.0.1:5000/api/summary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, app_password: appPassword }),
       });
-
+  
       const data = await res.json();
-      if (data.summaries) {
-        setSummaries(data.summaries);
+  
+      if (data.emails) {
+        // 📌 여기!
+        setSummaries(data.emails.map((e) => e.summary)); // 요약 리스트
+        console.log("✅ 받은 이메일들:", data.emails);
+        setEmails(data.emails); // 전체 이메일 리스트
       } else if (data.error) {
         setError(data.error);
       } else {
@@ -30,6 +35,7 @@ function GmailSummaryForm() {
       setError("요청 실패: " + err.message);
     }
   };
+  
 
   return (
     <div>

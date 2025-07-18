@@ -1,0 +1,33 @@
+.mail-list {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  
+  .mail-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.2s;
+  }
+  
+  .mail-item:hover {
+    background-color: #f3f3f3;
+  }
+  
+  .mail-subject {
+    font-weight: bold;
+  }
+  
+  .mail-from,
+  .mail-date {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
