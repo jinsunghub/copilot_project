@@ -9,6 +9,12 @@ const SearchBar = ({ searchTerm, onSearch }) => {
         value={searchTerm}
         onChange={(e) => onSearch(e.target.value)}
       />
+      <button
+        className="setting-button"
+        onClick={() => alert("설정은 준비 중입니다")}
+      >
+        설정
+      </button>
     </div>
   );
 };

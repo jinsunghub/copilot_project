@@ -14,7 +14,10 @@ const MailDetail = ({ email }) => {
         <strong>받은 날짜:</strong> {email.date}
       </p>
       <hr />
-      <p>{email.body}</p>
+      <p>
+        <strong>AI 요약본:</strong>
+        {email.summary}
+      </p>
     </div>
   );
 };
