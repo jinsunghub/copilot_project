@@ -5,12 +5,18 @@ import MailList from "./components/MailList";
 import MailDetail from "./components/MailDetail";
 import BackendTestButton from "./components/BackendTestButtons";
 import GmailSummaryForm from "./components/GmailSummaryForm";
-import Login from "./components/Login"; // 👈 로그인 컴포넌트 추가
-const App = ({ email, appPassword }) => {
+import Login from "./components/Login";
+
+const App = () => {
   const [emails, setEmails] = useState([]);
   const [selectedTag, setSelectedTag] = useState("전체 메일");
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // ⬇️ 로그인 관련 상태
+  const [email, setEmail] = useState("");
+  const [appPassword, setAppPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const filteredEmails = emails.filter((emailItem) => {
     const matchesTag =
@@ -22,13 +28,24 @@ const App = ({ email, appPassword }) => {
     return matchesTag && matchesSearch;
   });
 
+ 
+  if (!isLoggedIn) {
+    return (
+      <Login
+        setEmail={setEmail}
+        setAppPassword={setAppPassword}
+        setIsLoggedIn={setIsLoggedIn}
+      />
+    );
+  }
+  
+
   return (
     <div className="app-container">
       <Sidebar selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
 
       <div className="main-panel">
         <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
-
         <MailList
           emails={filteredEmails}
           onSelectEmail={(emailItem) => setSelectedEmail(emailItem)}
@@ -36,12 +53,11 @@ const App = ({ email, appPassword }) => {
       </div>
 
       <MailDetail email={selectedEmail} />
+
       <div className="right-panel">
-        <h1>📬 MailPilot AI</h1>
-        <BackendTestButton />
         <GmailSummaryForm
-          email={email} // ✅ 여기
-          appPassword={appPassword} // ✅ 여기
+          email={email}
+          appPassword={appPassword}
           setEmails={(emails) => setEmails(emails)}
         />
       </div>

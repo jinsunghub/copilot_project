@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 function GmailSummaryForm({ email, appPassword, setEmails }) {
   const [summaries, setSummaries] = useState([]);
   const [error, setError] = useState("");
-
+  console.log("📧 email in GmailSummaryForm:", email);
+  console.log("🔐 appPassword in GmailSummaryForm:", appPassword);
   useEffect(() => {
     if (!email || !appPassword) return;
 
@@ -32,25 +33,6 @@ function GmailSummaryForm({ email, appPassword, setEmails }) {
 
     fetchData();
   }, [email, appPassword, setEmails]);
-
-  return (
-    <div>
-      <h2>📨 Gmail 요약 요청 결과</h2>
-      {error && <p style={{ color: "red" }}>❌ {error}</p>}
-      {summaries.length > 0 && (
-        <div>
-          <h3>✅ 요약 결과</h3>
-          <ul>
-            {summaries.map((s, i) => (
-              <li key={i} style={{ marginBottom: "10px" }}>
-                {s}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
 }
 
 export default GmailSummaryForm;

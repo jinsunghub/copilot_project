@@ -1,4 +1,3 @@
-// Login.jsx
 import React, { useState } from "react";
 import "./Login.css";
 
@@ -9,13 +8,19 @@ const Login = ({ setIsLoggedIn, setEmail, setAppPassword }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputEmail && inputPassword) {
-      setEmail(inputEmail); // 상위 컴포넌트에 이메일 전달
-      setAppPassword(inputPassword); // 상위 컴포넌트에 앱 비밀번호 전달
-      setIsLoggedIn(true); // 로그인 상태 true로 전환
+      setEmail(inputEmail);
+      setAppPassword(inputPassword);
+  
+      // setState는 batching되므로, delay를 두고 실행
+      setTimeout(() => {
+        setIsLoggedIn(true);
+      }, 0); // 혹은 10ms
     } else {
       alert("이메일과 비밀번호를 입력해주세요.");
     }
   };
+  
+  
 
   return (
     <div className="login-container">
