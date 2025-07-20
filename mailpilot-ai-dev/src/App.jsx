@@ -36,6 +36,15 @@ const App = ({ email, appPassword }) => {
       </div>
 
       <MailDetail email={selectedEmail} />
+      <div className="right-panel">
+        <h1>📬 MailPilot AI</h1>
+        <BackendTestButton />
+        <GmailSummaryForm
+          email={email} // ✅ 여기
+          appPassword={appPassword} // ✅ 여기
+          setEmails={(emails) => setEmails(emails)}
+        />
+      </div>
     </div>
   );
 };
