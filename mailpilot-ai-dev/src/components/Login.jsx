@@ -10,7 +10,7 @@ const Login = ({ setIsLoggedIn, setEmail, setAppPassword }) => {
     if (inputEmail && inputPassword) {
       setEmail(inputEmail);
       setAppPassword(inputPassword);
-  
+
       // setState는 batching되므로, delay를 두고 실행
       setTimeout(() => {
         setIsLoggedIn(true);
@@ -19,8 +19,6 @@ const Login = ({ setIsLoggedIn, setEmail, setAppPassword }) => {
       alert("이메일과 비밀번호를 입력해주세요.");
     }
   };
-  
-  
 
   return (
     <div className="login-container">

@@ -1,4 +1,5 @@
 import React from "react";
+import "./MailDetail.css";
 
 const MailDetail = ({ email }) => {
   if (!email)
@@ -14,10 +15,10 @@ const MailDetail = ({ email }) => {
         <strong>받은 날짜:</strong> {email.date}
       </p>
       <hr />
-      <p>
-        <strong>AI 요약본:</strong>
+      <div className="ai-summary-box">
+        <span className="ai-summary-label">🧠 AI 요약본</span>:<br />
         {email.summary}
-      </p>
+      </div>
     </div>
   );
 };

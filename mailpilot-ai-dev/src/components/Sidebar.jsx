@@ -10,10 +10,17 @@ const tags = [
   "키워드 필터",
 ];
 
-const Sidebar = ({ selectedTag, setSelectedTag }) => {
+const Sidebar = ({ selectedTag, setSelectedTag, onCompose }) => {
   return (
     <div className="sidebar">
-      <h2>📂 MailPilot</h2>
+      <h1>📂 MailPilot</h1>
+      <button
+        className="setting-button"
+        onClick={onCompose}
+        style={{ width: "100%", marginBottom: "20px" }}
+      >
+        메일 쓰기
+      </button>
       <ul>
         {tags.map((tag) => (
           <li
