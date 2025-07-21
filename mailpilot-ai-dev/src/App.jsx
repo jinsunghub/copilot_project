@@ -13,7 +13,7 @@ const App = () => {
   const [selectedTag, setSelectedTag] = useState("전체 메일");
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isComposing, setIsComosing] = useState(false);
+  const [isComposing, setIsComposing] = useState(false);
   const [viewingEmail, setViewingEmail] = useState(null);
 
   // ⬇️ 로그인 관련 상태
