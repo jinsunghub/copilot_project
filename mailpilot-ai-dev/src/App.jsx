@@ -15,6 +15,8 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isComposing, setIsComposing] = useState(false);
   const [viewingEmail, setViewingEmail] = useState(null);
+  const [lastFetchTime, setLastFetchTime] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]); //체크박스
 
   // 로그인 관련 상태
   const [email, setEmail] = useState("");
@@ -34,10 +36,20 @@ const App = () => {
     }
   }, []);
 
+  const tagMap = {
+    "전체 메일": null, // all
+    "받은 메일함": "받은",
+    "중요 메일": "중요",
+    스팸: "스팸",
+    "보낸 메일함": "보낸", // future
+    "내게 쓴 메일": "내게", // future
+    "키워드 필터": "키워드", // optional
+  };
+
+  const requiredTag = tagMap[selectedTag];
+
   const filteredEmails = emails.filter((emailItem) => {
-    const matchesTag =
-      selectedTag === "전체 메일" ||
-      emailItem.tag === selectedTag.replace(" 메일함", "");
+    const matchesTag = !requiredTag || emailItem.tag === requiredTag;
     const matchesSearch =
       emailItem.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emailItem.from.toLowerCase().includes(searchTerm.toLowerCase());
@@ -89,6 +101,7 @@ const App = () => {
             onBack={() => setIsComposing(false)}
             email={email}
             appPassword={appPassword}
+            selectedEmail={selectedEmail}
           />
         ) : viewingEmail ? (
           <div className="mail-content">
@@ -112,11 +125,50 @@ const App = () => {
               className="setting-button"
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                setIsComposing(true);
-                setViewingEmail(null);
+                const original = viewingEmail;
+                const sender =
+                  original.from.match(/<(.+?)>/)?.[1] || original.from;
+                const replyHeader = `\n---------------------------------------------------
+                \n${original.date}에, 작성자 <${sender}>님이 작성:\n${original.body}`;
+
+                setSelectedEmail({
+                  to: sender,
+                  subject: `RE: ${original.subject}`,
+                  body: replyHeader,
+                });
+                // 2️⃣ 그리고 10ms 후에 작성 모드로 전환
+                setTimeout(() => {
+                  setIsComposing(true);
+                  setViewingEmail(null);
+                }, 10);
               }}
             >
               답장
+            </button>
+
+            <button
+              className="setting-button"
+              style={{ marginLeft: "10px" }}
+              onClick={() => {
+                const original = viewingEmail;
+                const sender =
+                  original.from.match(/<(.+?)>/)?.[1] || original.from;
+                const replyHeader = `\n---------------------------------------------------
+                \n${original.date}에, 작성자 <${sender}>님이 작성:\n${original.body}`;
+
+                setSelectedEmail({
+                  to: sender,
+                  subject: `RE: ${original.subject}`,
+                  body: replyHeader,
+                });
+                // 2️⃣ 그리고 10ms 후에 작성 모드로 전환
+                setTimeout(() => {
+                  setIsComposing(true);
+                  setViewingEmail(null);
+                }, 10);
+              }}
+            >
+              AI 답장
             </button>
           </div>
         ) : (
@@ -126,6 +178,8 @@ const App = () => {
               setViewingEmail(emailItem);
               setSelectedEmail(emailItem);
             }}
+            selectedIds={selectedIds} //체크박스
+            setSelectedIds={setSelectedIds} //체크박스
           />
         )}
       </div>
@@ -137,11 +191,13 @@ const App = () => {
           ref={gmailRef}
           email={email}
           appPassword={appPassword}
+          after={lastFetchTime}
           setEmails={(emails) => {
             setEmails(emails);
             if (emails.length > 0) {
-              setSelectedEmail(emails[4]); // ✅ 첫 번째 메일 자동 선택
+              setSelectedEmail(emails[0]); // ✅ 첫 번째 메일 자동 선택
             }
+            setLastFetchTime(new Date().toISOString()); //새로고침 시점 저장
           }}
         />
       </div>

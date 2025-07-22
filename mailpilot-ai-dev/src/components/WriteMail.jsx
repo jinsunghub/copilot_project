@@ -1,25 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./WriteMail.css";
 
-const WriteMail = ({ onBack, email, appPassword }) => {
+const WriteMail = ({ onBack, email, appPassword, selectedEmail }) => {
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
 
+  useEffect(() => {
+    if (selectedEmail) {
+      setTo(selectedEmail.to || "");
+      setSubject(selectedEmail.subject || "");
+      setBody(selectedEmail.body || "");
+    }
+  }, [selectedEmail]);
+
   const handleSend = async () => {
+    const payload = {
+      email,
+      app_password: appPassword,
+      to,
+      subject,
+      body,
+    };
+
     try {
       const response = await fetch("http://localhost:5001/api/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email, // 로그인한 사용자 이메일
-          app_password: appPassword, // 로그인한 사용자 앱 비밀번호
-          to,
-          subject,
-          body,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
