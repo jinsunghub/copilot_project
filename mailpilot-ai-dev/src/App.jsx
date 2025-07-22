@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
 import MailList from "./components/MailList";
@@ -16,10 +16,23 @@ const App = () => {
   const [isComposing, setIsComposing] = useState(false);
   const [viewingEmail, setViewingEmail] = useState(null);
 
-  // ⬇️ 로그인 관련 상태
+  // 로그인 관련 상태
   const [email, setEmail] = useState("");
   const [appPassword, setAppPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const gmailRef = useRef(null); // ✅ 새로고침 버튼용 ref
+
+  // 로그인 정보 복원
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("appPassword");
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setAppPassword(savedPassword);
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const filteredEmails = emails.filter((emailItem) => {
     const matchesTag =
@@ -34,8 +47,14 @@ const App = () => {
   if (!isLoggedIn) {
     return (
       <Login
-        setEmail={setEmail}
-        setAppPassword={setAppPassword}
+        setEmail={(value) => {
+          setEmail(value);
+          localStorage.setItem("email", value); // 저장
+        }}
+        setAppPassword={(value) => {
+          setAppPassword(value);
+          localStorage.setItem("appPassword", value); // 저장
+        }}
         setIsLoggedIn={setIsLoggedIn}
       />
     );
@@ -47,15 +66,30 @@ const App = () => {
         selectedTag={selectedTag}
         setSelectedTag={setSelectedTag}
         onCompose={() => {
-          setIsComosing(true);
+          setIsComposing(true);
           setSelectedEmail(null);
         }}
       />
 
       <div className="main-panel">
         <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
+
+        {/* ✅ 새로고침 버튼 */}
+        <div style={{ padding: "8px 16px" }}>
+          <button
+            className="setting-button"
+            onClick={() => gmailRef.current?.refetch()}
+          >
+            🔄 메일 새로고침
+          </button>
+        </div>
+
         {isComposing ? (
-          <WriteMail onBack={() => setIsComosing(false)} />
+          <WriteMail
+            onBack={() => setIsComposing(false)}
+            email={email}
+            appPassword={appPassword}
+          />
         ) : viewingEmail ? (
           <div className="mail-content">
             <h2>{viewingEmail.subject}</h2>
@@ -100,9 +134,15 @@ const App = () => {
 
       <div className="right-panel">
         <GmailSummaryForm
+          ref={gmailRef}
           email={email}
           appPassword={appPassword}
-          setEmails={(emails) => setEmails(emails)}
+          setEmails={(emails) => {
+            setEmails(emails);
+            if (emails.length > 0) {
+              setSelectedEmail(emails[4]); // ✅ 첫 번째 메일 자동 선택
+            }
+          }}
         />
       </div>
     </div>

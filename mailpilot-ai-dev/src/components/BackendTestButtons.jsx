@@ -4,12 +4,11 @@ function BackendTestButton() {
   const [result, setResult] = useState("");
 
   const testBackend = () => {
-    fetch("http://127.0.0.1:5000/api/test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: "React에서 보낸 테스트 요청입니다." }),
-      })
-      
+    fetch("http://127.0.0.1:5001/api/test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: "React에서 보낸 테스트 요청입니다." }),
+    })
       .then((res) => res.json())
       .then((data) => {
         console.log("백엔드 응답:", data);
