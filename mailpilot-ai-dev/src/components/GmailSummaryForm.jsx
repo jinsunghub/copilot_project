@@ -1,8 +1,7 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 const GmailSummaryForm = forwardRef(
-  ({ email, appPassword, setEmails, after = null }, ref) => {
-    const [summaries, setSummaries] = useState([]);
+  ({ email, appPassword, after, setEmails }, ref) => {
     const [error, setError] = useState("");
 
     const fetchData = async () => {
@@ -15,30 +14,26 @@ const GmailSummaryForm = forwardRef(
           body: JSON.stringify({
             email,
             app_password: appPassword,
-            ...(after && { after }), // ✅ after가 존재할 때만 추가
+            after: after || null,
           }),
         });
 
         const data = await res.json();
 
         if (data.emails) {
-          const sorted = data.emails.sort(
-            (a, b) => new Date(b.date) - new Date(a.date)
-          );
-          setSummaries(sorted.map((e) => e.summary));
-          setEmails(sorted);
+          setEmails(data.emails); // ✅ 정렬은 App.jsx에서만!
           setError("");
         } else {
-          setError(data.error || "예상치 못한 응답");
+          setError(data.error || "❗예상치 못한 응답");
         }
       } catch (err) {
-        setError("요청 실패: " + err.message);
+        setError("❗요청 실패: " + err.message);
       }
     };
 
     useEffect(() => {
       fetchData();
-    }, [email, appPassword, after]); // ✅ after가 변경되면 다시 fetch
+    }, []);
 
     useImperativeHandle(ref, () => ({
       refetch: fetchData,

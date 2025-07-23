@@ -192,12 +192,36 @@ const App = () => {
           email={email}
           appPassword={appPassword}
           after={lastFetchTime}
-          setEmails={(emails) => {
-            setEmails(emails);
-            if (emails.length > 0) {
-              setSelectedEmail(emails[0]); // ✅ 첫 번째 메일 자동 선택
+          setEmails={(newMails) => {
+            setEmails((prev) => {
+              // 1. 기존 + 새로운 메일 합치기
+              const combined = [...prev, ...newMails];
+
+              // 2. 중복 제거 (subject + from + date 기준으로)
+              const seen = new Set();
+              const unique = combined.filter((mail) => {
+                const key = `${mail.subject}-${mail.from}-${mail.date}`;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+              });
+
+              // 3. 날짜 기준 정렬 (내림차순: 최신이 위로)
+              unique.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+              return unique;
+            });
+
+            // 4. 메일 선택 상태 갱신
+            if (newMails.length > 0) {
+              const latest = [...newMails].sort(
+                (a, b) => new Date(a.date) - new Date(b.date)
+              )[0];
+              setSelectedEmail(latest);
             }
-            setLastFetchTime(new Date().toISOString()); //새로고침 시점 저장
+
+            // 5. 새로고침 시점 저장
+            setLastFetchTime(new Date().toISOString());
           }}
         />
       </div>
