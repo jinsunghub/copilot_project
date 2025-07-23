@@ -1,13 +1,7 @@
 import React from "react";
+import "./Sidebar.css";
 
-const tags = [
-  "전체 메일",
-  "중요 메일",
-  "받은 메일함",
-  "보낸 메일함",
-  "스팸",
-  "키워드 필터",
-];
+const tags = ["전체 메일", "중요 메일", "스팸", "보안 경고"];
 
 const Sidebar = ({ selectedTag, setSelectedTag, onCompose }) => {
   return (

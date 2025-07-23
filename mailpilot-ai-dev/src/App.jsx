@@ -56,12 +56,9 @@ const App = () => {
 
   const tagMap = {
     "전체 메일": null, // all
-    "받은 메일함": "받은",
-    "중요 메일": "중요",
-    스팸: "스팸",
-    "보낸 메일함": "보낸", // future
-    "내게 쓴 메일": "내게", // future
-    "키워드 필터": "키워드", // optional
+    "중요 메일": ["university.", "company."], // 대학교 + 회사기업
+    스팸: "spam mail.",
+    "보안 경고": "security alert.",
   };
 
   const requiredTag = tagMap[selectedTag];
@@ -70,13 +67,18 @@ const App = () => {
     let matchesTag = true;
 
     if (requiredTag) {
-      if (requiredTag === "스팸") {
-        // tag가 "스팸"이거나 classification이 "spam mail"인 메일 모두 포함
+      if (selectedTag === "중요 메일") {
+        // 중요 메일: university. 또는 company. 분류
         matchesTag =
-          emailItem.tag === "스팸" ||
-          emailItem.classification?.toLowerCase() === "spam mail";
-      } else {
-        matchesTag = emailItem.tag === requiredTag;
+          emailItem.classification?.toLowerCase() === "university." ||
+          emailItem.classification?.toLowerCase() === "company.";
+      } else if (selectedTag === "스팸") {
+        // 스팸: spam mail. 분류
+        matchesTag = emailItem.classification?.toLowerCase() === "spam mail.";
+      } else if (selectedTag === "보안 경고") {
+        // 보안 경고: security alert. 분류
+        matchesTag =
+          emailItem.classification?.toLowerCase() === "security alert.";
       }
     }
 
