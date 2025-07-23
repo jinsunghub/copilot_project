@@ -1,3 +1,23 @@
+/* 기존 스타일 유지 */
+.mail-detail {
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  height: calc(100vh - 120px); /* 뷰포트 높이에 맞춤 */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mail-detail.empty {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ai-summary-box {
   background-color: #fffbe6;
   border-left: 6px solid #f59e0b;
@@ -11,4 +31,45 @@
 .ai-summary-label {
   font-weight: bold;
   color: #b45309;
+}
+
+/* ✅ 새로 추가된 스타일 - 다중 메일 표시용 */
+.new-emails-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.new-email-item {
+  margin-bottom: 20px;
+}
+
+.email-header h3 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1.1em;
+}
+
+.email-header p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.email-separator {
+  border: none;
+  border-top: 2px solid #ddd;
+  margin: 20px 0;
+}
+
+/* 새 메일 헤더 스타일 */
+.mail-detail h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* 새 메일이 여러 개일 때 제목 스타일 */
+.mail-detail h2:contains("🆕") {
+  color: #ff6b35;
+  font-weight: bold;
 }

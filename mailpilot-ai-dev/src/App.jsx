@@ -207,7 +207,7 @@ const App = () => {
             emails={filteredEmails}
             onSelectEmail={(emailItem) => {
               setViewingEmail(emailItem);
-              setSelectedEmail(emailItem);
+              setSelectedEmail(emailItem); // 단일 메일로 설정
             }}
             selectedIds={selectedIds} //체크박스
             setSelectedIds={setSelectedIds} //체크박스
@@ -228,42 +228,84 @@ const App = () => {
               console.log("새로운 메일:", newMails.length, "개");
               console.log("기존 메일:", prev.length, "개");
 
-              // ✅ 1. 모든 메일을 하나의 배열로 합치기 (기존 + 새로운)
-              const combined = [...prev, ...newMails];
+              // 첫 로딩인지 확인
+              const isFirstLoad = prev.length === 0;
 
-              // ✅ 2. 중복 제거 (subject + from + date 기준으로)
-              const seen = new Set();
-              const unique = combined.filter((mail) => {
-                const key = `${mail.subject}-${mail.from}-${mail.date}`;
-                if (seen.has(key)) return false;
-                seen.add(key);
-                return true;
-              });
+              if (isFirstLoad) {
+                // ✅ 첫 로딩: 새 메일들만 날짜순 정렬해서 반환하고 모든 메일을 MailDetail에 표시
+                console.log("첫 로딩 - 새 메일들을 날짜순 정렬");
+                const sorted = newMails.sort((a, b) => {
+                  const dateA = parseDate(a.date);
+                  const dateB = parseDate(b.date);
+                  return dateB - dateA; // 내림차순: 최신이 위로
+                });
+                console.log("첫 로딩 정렬 완료:", sorted.length, "개");
+                // 첫 로딩 시에는 모든 메일을 MailDetail에 표시
+                setSelectedEmail(sorted);
+                return sorted;
+              } else {
+                // ✅ 새로고침: 기존 메일보다 더 최신인 메일만 필터링
+                console.log("새로고침 - 기존 메일보다 최신인 메일만 필터링");
 
-              // ✅ 3. 날짜 기준 정렬 (내림차순: 최신이 위로)
-              const sorted = unique.sort((a, b) => {
-                const dateA = parseDate(a.date);
-                const dateB = parseDate(b.date);
-                return dateB - dateA; // 내림차순 정렬
-              });
+                // 기존 메일 중 가장 최신 날짜 찾기
+                const latestExistingDate =
+                  prev.length > 0
+                    ? Math.max(
+                        ...prev.map((mail) => parseDate(mail.date).getTime())
+                      )
+                    : 0;
 
-              console.log("정렬된 메일:", sorted.length, "개");
-              console.log("최신 메일 날짜:", sorted[0]?.date);
-              console.log(
-                "가장 오래된 메일 날짜:",
-                sorted[sorted.length - 1]?.date
-              );
+                console.log(
+                  "기존 메일 중 최신 날짜:",
+                  new Date(latestExistingDate)
+                );
 
-              return sorted;
+                // 기존 메일보다 더 최신인 메일만 필터링
+                const reallyNewMails = newMails.filter((mail) => {
+                  const mailDate = parseDate(mail.date).getTime();
+                  return mailDate > latestExistingDate;
+                });
+
+                console.log("진짜 새로운 메일:", reallyNewMails.length, "개");
+
+                if (reallyNewMails.length > 0) {
+                  // 1. 진짜 새로운 메일들을 날짜순으로 정렬 (최신 먼저)
+                  const sortedNewMails = reallyNewMails.sort((a, b) => {
+                    const dateA = parseDate(a.date);
+                    const dateB = parseDate(b.date);
+                    return dateB - dateA;
+                  });
+
+                  // 2. 새 메일을 기존 메일 앞에 추가
+                  const combined = [...sortedNewMails, ...prev];
+
+                  // 3. 중복 제거 (subject + from + date 기준)
+                  const seen = new Set();
+                  const unique = combined.filter((mail) => {
+                    const key = `${mail.subject}-${mail.from}-${mail.date}`;
+                    if (seen.has(key)) return false;
+                    seen.add(key);
+                    return true;
+                  });
+
+                  console.log("새로고침 완료:", unique.length, "개");
+                  console.log("맨 위 메일 날짜:", unique[0]?.date);
+
+                  // ✅ 진짜 새로운 메일들만 MailDetail에 표시
+                  setSelectedEmail(sortedNewMails);
+
+                  return unique;
+                } else {
+                  console.log("새로운 메일이 없습니다.");
+                  // 새로운 메일이 없으면 기존 상태 유지
+                  return prev;
+                }
+              }
             });
 
-            // ✅ 4. 메일 선택 상태 갱신 (새 메일이 있을 때만)
+            // ✅ 4. 메일 선택 상태 갱신은 위에서 이미 처리됨
             if (newMails.length > 0) {
-              // 새 메일 중에서 가장 최신 메일 선택
-              const latest = [...newMails].sort(
-                (a, b) => parseDate(b.date) - parseDate(a.date)
-              )[0];
-              setSelectedEmail(latest);
+              // 이미 위 로직에서 setSelectedEmail 처리됨
             }
 
             // ✅ 5. 새로고침 시점 저장
