@@ -34,7 +34,13 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
               {email.tag === "스팸" && (
                 <span className="spam-label">🚫 스팸</span>
               )}
+              {email.classification && (
+                <span className="classification-label">
+                  ({email.classification.replace(/\.$/, "")})
+                </span>
+              )}
             </div>
+
             <div className="mail-from">{email.from}</div>
             <div className="mail-date">{email.date}</div>
           </div>

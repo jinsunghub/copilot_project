@@ -14,10 +14,11 @@ const MailDetail = ({ email }) => {
       <p>
         <strong>받은 날짜:</strong> {email.date}
       </p>
-      <p>
-        <strong>분류: </strong>
-        {email.tag}
-      </p>
+      {email.classification && (
+        <p>
+          <strong>분류:</strong> {email.classification.replace(/\.$/, "")}
+        </p>
+      )}
       <hr />
       <div className="ai-summary-box">
         <span className="ai-summary-label">🧠 AI 요약본</span>:<br />

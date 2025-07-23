@@ -49,10 +49,23 @@ const App = () => {
   const requiredTag = tagMap[selectedTag];
 
   const filteredEmails = emails.filter((emailItem) => {
-    const matchesTag = !requiredTag || emailItem.tag === requiredTag;
+    let matchesTag = true;
+
+    if (requiredTag) {
+      if (requiredTag === "스팸") {
+        // tag가 "스팸"이거나 classification이 "spam mail"인 메일 모두 포함
+        matchesTag =
+          emailItem.tag === "스팸" ||
+          emailItem.classification?.toLowerCase() === "spam mail";
+      } else {
+        matchesTag = emailItem.tag === requiredTag;
+      }
+    }
+
     const matchesSearch =
       emailItem.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emailItem.from.toLowerCase().includes(searchTerm.toLowerCase());
+
     return matchesTag && matchesSearch;
   });
 
