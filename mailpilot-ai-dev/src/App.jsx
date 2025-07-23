@@ -195,7 +195,7 @@ const App = () => {
           setEmails={(newMails) => {
             setEmails((prev) => {
               // 1. 기존 + 새로운 메일 합치기
-              const combined = [...prev, ...newMails];
+              const combined = [...newMails, ...prev];
 
               // 2. 중복 제거 (subject + from + date 기준으로)
               const seen = new Set();
@@ -215,7 +215,7 @@ const App = () => {
             // 4. 메일 선택 상태 갱신
             if (newMails.length > 0) {
               const latest = [...newMails].sort(
-                (a, b) => new Date(a.date) - new Date(b.date)
+                (a, b) => new Date(b.date) - new Date(a.date)
               )[0];
               setSelectedEmail(latest);
             }
