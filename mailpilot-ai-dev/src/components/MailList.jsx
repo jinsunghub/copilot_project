@@ -9,11 +9,16 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
     }
   };
 
+  // ✅ App.js에서 이미 정렬된 상태로 받으므로 추가 정렬 불필요
+  // const sortedEmails = emails.slice().sort(...) 제거
+
   return (
     <div className="mail-list">
-      {emails.map((email) => (
-        <div key={email.id} className="mail-item">
-          {/* ⬅️ 체크박스만 따로 클릭 가능하도록 stopPropagation */}
+      {emails.map((email, index) => (
+        <div
+          key={`${email.subject}-${email.from}-${email.date}-${index}`} // 유니크 키 보강
+          className="mail-item"
+        >
           <input
             type="checkbox"
             checked={selectedIds.includes(email.id)}
@@ -23,7 +28,7 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
           />
           <div
             className="mail-info"
-            onClick={() => onSelectEmail(email)} // 메일 내용 보기
+            onClick={() => onSelectEmail(email)}
             style={{ cursor: "pointer", flex: 1 }}
           >
             <div className="mail-subject">

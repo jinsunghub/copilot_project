@@ -8,6 +8,24 @@ import GmailSummaryForm from "./components/GmailSummaryForm";
 import Login from "./components/Login";
 import WriteMail from "./components/WriteMail";
 
+// ✅ 날짜 파싱 함수를 App 레벨로 이동하여 일관성 확보
+const parseDate = (dateStr) => {
+  const parsed = new Date(dateStr);
+  if (!isNaN(parsed)) return parsed;
+
+  const koreanMatch = dateStr.match(
+    /(?:(\d{4})년)?\s*(\d{1,2})월\s*(\d{1,2})일/
+  );
+  if (koreanMatch) {
+    const year = koreanMatch[1] || new Date().getFullYear();
+    const month = koreanMatch[2].padStart(2, "0");
+    const day = koreanMatch[3].padStart(2, "0");
+    return new Date(`${year}-${month}-${day}`);
+  }
+
+  return new Date();
+};
+
 const App = () => {
   const [emails, setEmails] = useState([]);
   const [selectedTag, setSelectedTag] = useState("전체 메일");
@@ -207,10 +225,13 @@ const App = () => {
           after={lastFetchTime}
           setEmails={(newMails) => {
             setEmails((prev) => {
-              // 1. 기존 + 새로운 메일 합치기
-              const combined = [...newMails, ...prev];
+              console.log("새로운 메일:", newMails.length, "개");
+              console.log("기존 메일:", prev.length, "개");
 
-              // 2. 중복 제거 (subject + from + date 기준으로)
+              // ✅ 1. 모든 메일을 하나의 배열로 합치기 (기존 + 새로운)
+              const combined = [...prev, ...newMails];
+
+              // ✅ 2. 중복 제거 (subject + from + date 기준으로)
               const seen = new Set();
               const unique = combined.filter((mail) => {
                 const key = `${mail.subject}-${mail.from}-${mail.date}`;
@@ -219,21 +240,33 @@ const App = () => {
                 return true;
               });
 
-              // 3. 날짜 기준 정렬 (내림차순: 최신이 위로)
-              unique.sort((a, b) => new Date(b.date) - new Date(a.date));
+              // ✅ 3. 날짜 기준 정렬 (내림차순: 최신이 위로)
+              const sorted = unique.sort((a, b) => {
+                const dateA = parseDate(a.date);
+                const dateB = parseDate(b.date);
+                return dateB - dateA; // 내림차순 정렬
+              });
 
-              return unique;
+              console.log("정렬된 메일:", sorted.length, "개");
+              console.log("최신 메일 날짜:", sorted[0]?.date);
+              console.log(
+                "가장 오래된 메일 날짜:",
+                sorted[sorted.length - 1]?.date
+              );
+
+              return sorted;
             });
 
-            // 4. 메일 선택 상태 갱신
+            // ✅ 4. 메일 선택 상태 갱신 (새 메일이 있을 때만)
             if (newMails.length > 0) {
+              // 새 메일 중에서 가장 최신 메일 선택
               const latest = [...newMails].sort(
-                (a, b) => new Date(b.date) - new Date(a.date)
+                (a, b) => parseDate(b.date) - parseDate(a.date)
               )[0];
               setSelectedEmail(latest);
             }
 
-            // 5. 새로고침 시점 저장
+            // ✅ 5. 새로고침 시점 저장
             setLastFetchTime(new Date().toISOString());
           }}
         />
