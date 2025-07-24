@@ -1,7 +1,7 @@
 import React from "react";
 import "./Sidebar.css";
 
-const tags = ["전체 메일", "중요 메일", "스팸", "보안 경고"];
+const tags = ["전체 메일", "중요 메일", "스팸", "보안 경고", "챗봇 AI"];
 
 const Sidebar = ({ selectedTag, setSelectedTag, onCompose }) => {
   return (
@@ -21,7 +21,7 @@ const Sidebar = ({ selectedTag, setSelectedTag, onCompose }) => {
             className={selectedTag === tag ? "active" : ""}
             onClick={() => setSelectedTag(tag)}
           >
-            {tag}
+            {tag === "챗봇 AI" ? "🤖 챗봇 AI" : tag}
           </li>
         ))}
       </ul>

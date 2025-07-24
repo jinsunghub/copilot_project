@@ -7,6 +7,7 @@ import BackendTestButton from "./components/BackendTestButtons";
 import GmailSummaryForm from "./components/GmailSummaryForm";
 import Login from "./components/Login";
 import WriteMail from "./components/WriteMail";
+import Chatbot from "./components/Chatbot";
 
 // ✅ 날짜 파싱 함수를 App 레벨로 이동하여 일관성 확보
 const parseDate = (dateStr) => {
@@ -59,6 +60,7 @@ const App = () => {
     "중요 메일": ["university.", "company."], // 대학교 + 회사기업
     스팸: "spam mail.",
     "보안 경고": "security alert.",
+    "챗봇 AI": "chatbot", // 챗봇 추가
   };
 
   const requiredTag = tagMap[selectedTag];
@@ -136,6 +138,8 @@ const App = () => {
             appPassword={appPassword}
             selectedEmail={selectedEmail}
           />
+        ) : selectedTag === "챗봇 AI" ? (
+          <Chatbot email={email} appPassword={appPassword} />
         ) : viewingEmail ? (
           <div className="mail-content">
             <h2>{viewingEmail.subject}</h2>
@@ -203,6 +207,11 @@ const App = () => {
             >
               AI 답장
             </button>
+          </div>
+        ) : selectedTag === "챗봇 AI" ? (
+          // 챗봇 모드에서는 메일 리스트를 보여주지 않음
+          <div className="chatbot-placeholder">
+            <p>🤖 AI 어시스턴트와 대화해보세요!</p>
           </div>
         ) : (
           <MailList
