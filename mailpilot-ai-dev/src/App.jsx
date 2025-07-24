@@ -36,6 +36,7 @@ const App = () => {
   const [viewingEmail, setViewingEmail] = useState(null);
   const [lastFetchTime, setLastFetchTime] = useState(null);
   const [selectedIds, setSelectedIds] = useState([]); //체크박스
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false); // AI 답장 생성 상태
 
   // 로그인 관련 상태
   const [email, setEmail] = useState("");
@@ -54,6 +55,69 @@ const App = () => {
       setIsLoggedIn(true);
     }
   }, []);
+
+  // AI 답장 생성 함수
+  const generateAIReply = async (originalEmail) => {
+    setIsGeneratingAI(true);
+    try {
+      console.log("[🤖 AI 답장 생성 시작]", originalEmail.subject);
+
+      const response = await fetch(
+        "http://localhost:5001/api/generate-ai-reply",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sender: originalEmail.from,
+            subject: originalEmail.subject,
+            body: originalEmail.body,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        console.log("[✅ AI 답장 생성 완료]");
+
+        // 발신자 이메일 추출
+        const sender =
+          originalEmail.from.match(/<(.+?)>/)?.[1] || originalEmail.from;
+
+        // 원본 메일 인용 헤더
+        const replyHeader = `\n\n---------------------------------------------------\n${originalEmail.date}에, 작성자 <${sender}>님이 작성:\n${originalEmail.body}`;
+
+        // AI가 생성한 답장과 원본 메일 결합
+        const aiReplyWithOriginal = data.ai_reply + replyHeader;
+
+        // 메일 작성 폼에 AI 답장 설정
+        setSelectedEmail({
+          to: sender,
+          subject: `RE: ${originalEmail.subject}`,
+          body: aiReplyWithOriginal,
+          isAIGenerated: true, // AI 생성 표시용
+        });
+
+        // 작성 모드로 전환
+        setTimeout(() => {
+          setIsComposing(true);
+          setViewingEmail(null);
+        }, 10);
+
+        alert("🤖 AI 답장이 생성되었습니다!");
+      } else {
+        console.error("[❗AI 답장 생성 실패]", data.error);
+        alert(`AI 답장 생성 실패: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("[❗AI 답장 요청 오류]", error);
+      alert("AI 답장 생성 중 오류가 발생했습니다.");
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
 
   const tagMap = {
     "전체 메일": null, // all
@@ -185,27 +249,15 @@ const App = () => {
 
             <button
               className="setting-button"
-              style={{ marginLeft: "10px" }}
-              onClick={() => {
-                const original = viewingEmail;
-                const sender =
-                  original.from.match(/<(.+?)>/)?.[1] || original.from;
-                const replyHeader = `\n---------------------------------------------------
-                \n${original.date}에, 작성자 <${sender}>님이 작성:\n${original.body}`;
-
-                setSelectedEmail({
-                  to: sender,
-                  subject: `RE: ${original.subject}`,
-                  body: replyHeader,
-                });
-                // 2️⃣ 그리고 10ms 후에 작성 모드로 전환
-                setTimeout(() => {
-                  setIsComposing(true);
-                  setViewingEmail(null);
-                }, 10);
+              style={{
+                marginLeft: "10px",
+                backgroundColor: isGeneratingAI ? "#ccc" : "#4CAF50",
+                cursor: isGeneratingAI ? "not-allowed" : "pointer",
               }}
+              onClick={() => generateAIReply(viewingEmail)}
+              disabled={isGeneratingAI}
             >
-              AI 답장
+              {isGeneratingAI ? "🤖 AI 답장 생성 중..." : "🤖 AI 답장"}
             </button>
           </div>
         ) : selectedTag === "챗봇 AI" ? (
