@@ -1,3 +1,4 @@
+// ===== Chatbot.js =====
 import React, { useState, useRef, useEffect } from "react";
 import "./Chatbot.css";
 
@@ -32,37 +33,62 @@ const Chatbot = ({ email, appPassword }) => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = inputValue; // 입력값 저장
     setInputValue("");
     setIsLoading(true);
 
     try {
+      console.log("[🤖 챗봇 요청]", currentInput);
+
       const response = await fetch("http://localhost:5001/api/chatbot", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include", // ✅ 세션 쿠키 포함
         body: JSON.stringify({
           email: email,
           app_password: appPassword,
-          user_input: inputValue,
+          user_input: currentInput,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        console.log("[✅ 챗봇 응답]", data.action, data.confidence);
+
         const botMessage = {
           type: "bot",
           content: data.response || "죄송합니다. 처리 중 오류가 발생했습니다.",
           timestamp: new Date(),
           action: data.action || null,
+          confidence: data.confidence || 0,
+          detected_intent: data.detected_intent || null,
         };
         setMessages((prev) => [...prev, botMessage]);
       } else {
-        throw new Error(data.error || "서버 오류");
+        console.error("[❗챗봇 응답 오류]", data.error);
+
+        // 401 오류 (인증 실패) 처리
+        if (response.status === 401) {
+          const errorMessage = {
+            type: "bot",
+            content: "로그인 세션이 만료되었습니다. 다시 로그인해주세요.",
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, errorMessage]);
+
+          // 3초 후 페이지 새로고침으로 로그인 화면으로 이동
+          setTimeout(() => {
+            window.location.reload();
+          }, 3000);
+        } else {
+          throw new Error(data.error || "서버 오류");
+        }
       }
     } catch (error) {
-      console.error("챗봇 요청 실패:", error);
+      console.error("[❗챗봇 요청 실패]", error);
       const errorMessage = {
         type: "bot",
         content: "죄송합니다. 서버와의 연결에 문제가 있습니다.",
@@ -88,11 +114,22 @@ const Chatbot = ({ email, appPassword }) => {
     });
   };
 
+  // ✅ 빠른 입력 버튼 핸들러
+  const handleQuickInput = (text) => {
+    setInputValue(text);
+    // 포커스를 텍스트 영역으로 이동
+    document.querySelector(".chat-input")?.focus();
+  };
+
   return (
     <div className="chatbot-container">
       <div className="chatbot-header">
         <h2>🤖 AI 어시스턴트</h2>
         <p>문법 교정, 이미지 생성, 메일 검색 등을 도와드립니다</p>
+        {/* ✅ 현재 사용자 표시 */}
+        <div style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+          👤 {email}
+        </div>
       </div>
 
       <div className="chatbot-messages">
@@ -107,6 +144,21 @@ const Chatbot = ({ email, appPassword }) => {
               <div className="message-text">{message.content}</div>
               <div className="message-time">
                 {formatTime(message.timestamp)}
+                {/* ✅ 봇 메시지에 디버그 정보 표시 (개발 모드에서만) */}
+                {process.env.NODE_ENV === "development" &&
+                  message.type === "bot" &&
+                  message.action && (
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        color: "#999",
+                        marginTop: "2px",
+                      }}
+                    >
+                      🎯 {message.detected_intent} (
+                      {(message.confidence * 100).toFixed(1)}%)
+                    </div>
+                  )}
               </div>
             </div>
           </div>
@@ -131,21 +183,27 @@ const Chatbot = ({ email, appPassword }) => {
         <div className="input-suggestions">
           <button
             className="suggestion-btn"
-            onClick={() => setInputValue("맞춤법을 교정해주세요")}
+            onClick={() => handleQuickInput("맞춤법을 교정해주세요")}
           >
             맞춤법 교정
           </button>
           <button
             className="suggestion-btn"
-            onClick={() => setInputValue("이미지를 생성해주세요")}
+            onClick={() => handleQuickInput("이미지를 생성해주세요")}
           >
             이미지 생성
           </button>
           <button
             className="suggestion-btn"
-            onClick={() => setInputValue("특정 메일을 찾아주세요")}
+            onClick={() => handleQuickInput("특정 메일을 찾아주세요")}
           >
             메일 검색
+          </button>
+          <button
+            className="suggestion-btn"
+            onClick={() => handleQuickInput("김철수님의 메일을 찾아주세요")}
+          >
+            사람 검색
           </button>
         </div>
 

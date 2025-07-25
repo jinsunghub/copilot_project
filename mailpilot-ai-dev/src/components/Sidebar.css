@@ -66,3 +66,13 @@
   color: #333;
   letter-spacing: -0.5px;
 }
+
+.sidebar {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+  height: 100vh;
+  box-sizing: border-box;
+  position: relative; /* ✅ 추가 */
+}

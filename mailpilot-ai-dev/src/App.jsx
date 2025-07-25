@@ -45,14 +45,143 @@ const App = () => {
 
   const gmailRef = useRef(null); // ✅ 새로고침 버튼용 ref
 
-  // 로그인 정보 복원
+  // ✅ 백엔드 로그인 API 호출
+  const loginToBackend = async (userEmail) => {
+    try {
+      console.log(`[🔑 백엔드 로그인] ${userEmail}`);
+      const response = await fetch("http://localhost:5001/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 세션 쿠키 포함
+        body: JSON.stringify({ email: userEmail }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        console.log("[✅ 백엔드 로그인 성공]", data.session_id);
+        return true;
+      } else {
+        console.error("[❗백엔드 로그인 실패]", data.error);
+        return false;
+      }
+    } catch (error) {
+      console.error("[❗백엔드 로그인 오류]", error);
+      return false;
+    }
+  };
+
+  // ✅ 백엔드 로그아웃 API 호출
+  const logoutFromBackend = async (userEmail) => {
+    try {
+      console.log(`[🚪 백엔드 로그아웃] ${userEmail}`);
+      const response = await fetch("http://localhost:5001/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // 세션 쿠키 포함
+        body: JSON.stringify({ email: userEmail }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        console.log("[✅ 백엔드 로그아웃 성공]");
+        return true;
+      } else {
+        console.error("[❗백엔드 로그아웃 실패]", data.error);
+        return false;
+      }
+    } catch (error) {
+      console.error("[❗백엔드 로그아웃 오류]", error);
+      return false;
+    }
+  };
+
+  // ✅ 로그인 처리 함수 (Login 컴포넌트에서 호출)
+  const handleLogin = async (userEmail, userPassword) => {
+    try {
+      // 1. 백엔드 세션 생성
+      const backendLoginSuccess = await loginToBackend(userEmail);
+
+      if (backendLoginSuccess) {
+        // 2. 프론트엔드 상태 설정
+        setEmail(userEmail);
+        setAppPassword(userPassword);
+        localStorage.setItem("email", userEmail);
+        localStorage.setItem("appPassword", userPassword);
+
+        // 3. 로그인 상태로 전환
+        setIsLoggedIn(true);
+
+        console.log("[🎉 로그인 완료] 프론트엔드 + 백엔드 세션 생성됨");
+        return true;
+      } else {
+        alert("백엔드 로그인에 실패했습니다. 다시 시도해주세요.");
+        return false;
+      }
+    } catch (error) {
+      console.error("[❗로그인 처리 오류]", error);
+      alert("로그인 중 오류가 발생했습니다.");
+      return false;
+    }
+  };
+
+  // ✅ 로그아웃 처리 함수
+  const handleLogout = async () => {
+    try {
+      // 1. 백엔드 세션 삭제
+      await logoutFromBackend(email);
+
+      // 2. 프론트엔드 상태 초기화
+      setEmails([]);
+      setSelectedEmail(null);
+      setViewingEmail(null);
+      setLastFetchTime(null);
+      setSelectedIds([]);
+      setSelectedTag("전체 메일");
+      setSearchTerm("");
+      setIsComposing(false);
+
+      // 3. 로그인 정보 삭제
+      setEmail("");
+      setAppPassword("");
+      setIsLoggedIn(false);
+      localStorage.removeItem("email");
+      localStorage.removeItem("appPassword");
+
+      console.log("[🔄 로그아웃 완료] 모든 데이터 초기화됨");
+      alert("로그아웃되었습니다.");
+    } catch (error) {
+      console.error("[❗로그아웃 처리 오류]", error);
+    }
+  };
+
+  // ✅ 로그인 정보 복원 (페이지 새로고침 시)
   useEffect(() => {
     const savedEmail = localStorage.getItem("email");
     const savedPassword = localStorage.getItem("appPassword");
+
     if (savedEmail && savedPassword) {
-      setEmail(savedEmail);
-      setAppPassword(savedPassword);
-      setIsLoggedIn(true);
+      console.log("[🔄 로그인 정보 복원]", savedEmail);
+
+      // 백엔드 세션도 복원
+      loginToBackend(savedEmail).then((success) => {
+        if (success) {
+          setEmail(savedEmail);
+          setAppPassword(savedPassword);
+          setIsLoggedIn(true);
+          console.log("[✅ 세션 복원 완료]");
+        } else {
+          // 백엔드 세션 복원 실패 시 로컬 정보 삭제
+          localStorage.removeItem("email");
+          localStorage.removeItem("appPassword");
+          console.log("[⚠️ 세션 복원 실패 - 로컬 정보 삭제]");
+        }
+      });
     }
   }, []);
 
@@ -69,10 +198,12 @@ const App = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include", // ✅ 세션 쿠키 포함
           body: JSON.stringify({
             sender: originalEmail.from,
             subject: originalEmail.subject,
             body: originalEmail.body,
+            email: email, // ✅ 현재 사용자 이메일 추가
           }),
         }
       );
@@ -158,15 +289,7 @@ const App = () => {
   if (!isLoggedIn) {
     return (
       <Login
-        setEmail={(value) => {
-          setEmail(value);
-          localStorage.setItem("email", value); // 저장
-        }}
-        setAppPassword={(value) => {
-          setAppPassword(value);
-          localStorage.setItem("appPassword", value); // 저장
-        }}
-        setIsLoggedIn={setIsLoggedIn}
+        onLogin={handleLogin} // ✅ 로그인 처리 함수 전달
       />
     );
   }
@@ -180,6 +303,8 @@ const App = () => {
           setIsComposing(true);
           setSelectedEmail(null);
         }}
+        onLogout={handleLogout} // ✅ 로그아웃 함수 전달
+        userEmail={email} // ✅ 현재 사용자 이메일 전달
       />
 
       <div className="main-panel">
