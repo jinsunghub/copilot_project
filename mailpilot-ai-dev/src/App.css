@@ -84,7 +84,7 @@ body {
 
 /* 메인 패널 */
 .main-panel {
-  flex: 1;
+  flex: 1.5; /* 1에서 0.8로 줄임 */
   display: flex;
   flex-direction: column;
   background: #ffffff;
