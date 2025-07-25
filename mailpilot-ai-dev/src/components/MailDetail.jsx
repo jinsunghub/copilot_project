@@ -37,7 +37,8 @@ const MailDetail = ({ email }) => {
               </div>
 
               <div className="ai-summary-box">
-                <span className="ai-summary-label">🧠 AI 요약본</span>:<br />
+                <span className="ai-summary-label">🧠 AI 요약본</span>
+
                 {emailItem.summary}
               </div>
 

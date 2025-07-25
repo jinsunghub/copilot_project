@@ -1,136 +1,550 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background-color: #f3f4f6;
+/* 전역 스타일 */
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+/* 메인 컨테이너 */
 .app-container {
   display: flex;
   height: 100vh;
+  background: #f7fafc;
+  overflow: hidden;
 }
 
+/* 사이드바 */
 .sidebar {
-  width: 200px;
-  background-color: #ffffff;
-  border-right: 1px solid #ddd;
-  padding: 20px;
+  width: 240px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-right: 1px solid #e2e8f0;
+  padding: 24px 16px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
-  padding: 8px;
+  padding: 12px 16px;
   cursor: pointer;
-  color: #333;
-  border-radius: 6px;
+  color: #4a5568;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.sidebar li.active,
-.sidebar li:hover {
-  background-color: #e0e7ff;
+.sidebar li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
 }
 
+.sidebar li:hover::before {
+  left: 100%;
+}
+
+.sidebar li.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.sidebar li:hover:not(.active) {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 메인 패널 */
 .main-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: #ffffff;
+  border-radius: 20px 0 0 20px;
+  margin: 16px 0 16px 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
+/* 검색바 */
 .search-bar {
-  padding: 12px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 1px solid #e2e8f0;
+  backdrop-filter: blur(10px);
 }
 
 .search-bar input {
-  width: 90%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 25px;
+  border: 2px solid #e2e8f0;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+.search-bar input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.search-bar input::placeholder {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* 메일 리스트 */
 .mail-list {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
-  background-color: #fafafa;
+  padding: 24px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
 }
 
+.mail-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mail-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.mail-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+  border-radius: 10px;
+}
+
+.mail-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #a0aec0, #718096);
+}
+
+/* 메일 아이템 */
 .mail-item {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.mail-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.mail-item:hover::before {
+  transform: scaleX(1);
 }
 
 .mail-item:hover {
-  background-color: #f0f4ff;
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
 }
 
 .mail-subject {
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #2d3748;
+  line-height: 1.4;
 }
 
-.mail-from,
-.mail-date {
-  font-size: 0.9em;
-  color: #555;
-}
-
-.mail-detail {
-  width: 320px;
-  border-left: 1px solid #ddd;
-  padding: 20px;
-  background-color: #fff;
-  overflow-y: auto;
-}
-
-.mail-detail.empty {
-  color: #aaa;
-  text-align: center;
-  padding: 50px;
-}
-
-.setting-button {
-  padding: 8px 16px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.mail-from {
   font-size: 14px;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-.setting-button:hover {
-  background-color: #357ab8;
+  color: #667eea;
+  font-weight: 500;
+  margin-bottom: 4px;
 }
 
-.mail-content {
-  padding: 20px;
-  background-color: #fff;
-  height: 100%;
-  overflow-y: auto;
-}
-
-.mail-content h2 {
-  margin-bottom: 10px;
-}
-
-.mail-body {
-  margin-top: 20px;
-  white-space: pre-wrap;
-  line-height: 1.5;
+.mail-date {
+  font-size: 13px;
+  color: #a0aec0;
+  font-weight: 400;
 }
 
 .classification-label {
-  font-size: 0.8rem;
-  color: #555;
-  margin-left: 5px;
+  font-size: 12px;
+  color: #805ad5;
+  background: linear-gradient(135deg, #e9d8fd, #d6bcfa);
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
+/* 메일 디테일 */
+.mail-detail {
+  width: 350px;
+  border-left: 1px solid #e2e8f0;
+  padding: 24px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.mail-detail::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mail-detail::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.mail-detail::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #cbd5e0, #a0aec0);
+  border-radius: 10px;
+}
+
+.mail-detail.empty {
+  text-align: center;
+  color: #a0aec0;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.mail-detail.empty::before {
+  content: "📧";
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* AI 요약 박스 */
+.ai-summary-box {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border-left: 6px solid #f39c12;
+  padding: 16px 20px;
+  margin-top: 20px;
+  border-radius: 12px;
+  font-size: 15px;
+  line-height: 1.6;
+  box-shadow: 0 4px 15px rgba(243, 156, 18, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-summary-box::before {
+  content: "✨";
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.ai-summary-label {
+  font-weight: 700;
+  color: #d68910;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* 버튼 스타일 */
+.setting-button {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 8px 8px 8px 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.setting-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.setting-button:hover::before {
+  left: 100%;
+}
+
+.setting-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.setting-button:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.setting-button:disabled {
+  background: linear-gradient(135deg, #cbd5e0 0%, #a0aec0 100%);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.back-button {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+}
+
+.back-button:hover {
+  box-shadow: 0 8px 25px rgba(229, 62, 62, 0.4);
+}
+
+/* 메일 컨텐츠 */
+.mail-content {
+  padding: 32px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 20px;
+  margin: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mail-content h2 {
+  margin-bottom: 24px;
+  color: #2d3748;
+  font-weight: 700;
+  font-size: 28px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.mail-body {
+  margin-top: 24px;
+  white-space: pre-wrap;
+  line-height: 1.8;
+  color: #4a5568;
+  background: rgba(248, 250, 252, 0.8);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  font-family: "Monaco", "Menlo", monospace;
+}
+
+/* 입력 필드 */
+.mail-input,
+.mail-textarea {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.mail-input:focus,
+.mail-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 1);
+}
+
+.mail-textarea {
+  min-height: 200px;
+  resize: vertical;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* 체크박스 스타일 */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .sidebar ul {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 16px;
+  }
+
+  .sidebar li {
+    white-space: nowrap;
+    margin-right: 16px;
+  }
+
+  .mail-detail {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #e2e8f0;
+  }
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mail-item {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.mail-item:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.mail-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.mail-item:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.mail-item:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.mail-item:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* 로딩 애니메이션 */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 스크롤 애니메이션 */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sidebar li {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* 호버 효과 강화 */
+.mail-item,
+.setting-button,
+.sidebar li {
+  will-change: transform;
+}
+
+/* 다크모드 지원 준비 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    color: #e2e8f0;
+  }
+
+  .main-panel {
+    background: #2d3748;
+  }
+
+  .mail-item {
+    background: rgba(45, 55, 72, 0.9);
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .mail-subject {
+    color: #e2e8f0;
+  }
 }
