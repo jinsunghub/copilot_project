@@ -119,7 +119,7 @@ tauri init
 
 **4. Tauri 파일 설정**
 ```bash
-tauri build # 관리자 권한 실행으로 cmd 실행하여 빌드 
+tauri build # '관리자 권한 실행'으로 cmd 실행하여 빌드 
 ```
 앱은 `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`에 있음
 
