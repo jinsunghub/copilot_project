@@ -103,8 +103,9 @@ npm install
 ```
 
 **3. Tauri 설치**
+rustup-init.exe 파일 설치
+
 ```bash
-rustup-init.exe
 npm install -g @tauri-apps/cli
 npm install @tauri-apps/api
 tauri init
