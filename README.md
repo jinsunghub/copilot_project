@@ -117,13 +117,7 @@ tauri init
 - Frontend run command: npm run dev
 - Frontend build command: npm run build
 
-**4. Tauri 실행 및 파일 변경**
-```bash
-tauri dev
-```
-src-tauri/tauri.conf.json 파일에서 com.tauri.dev를 com.yourname.desktop로 변경
-
-**5. Tauri 파일 설정**
+**4. Tauri 파일 설정**
 ```bash
 tauri build # 관리자 권한 실행으로 cmd 실행하여 빌드 
 ```
