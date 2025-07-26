@@ -1,4 +1,4 @@
-# E.M.Pilot
+# E.M.Pilot - Frontend
 
 **AI 기반 이메일 관리 데스크탑 앱 (Tauri 기반)**
 
