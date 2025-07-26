@@ -197,7 +197,7 @@ SOFTWARE.
 이 프로젝트는 다음 오픈소스 라이브러리들을 사용합니다:
 
 **Frontend Dependencies**
-- **Electron**: MIT License
+- **Tauri**: MIT License
 - **Bootstrap**: MIT License
 - **Font Awesome**: Font Awesome Free License
 
