@@ -103,8 +103,8 @@ npm install
 ```
 
 **3. Tauri 설치**
-rustup-init.exe 파일 설치
 
+사전에 rustup-init.exe 파일 설치
 ```bash
 npm install -g @tauri-apps/cli
 npm install @tauri-apps/api
@@ -125,8 +125,7 @@ src-tauri/tauri.conf.json 파일에서 com.tauri.dev를 com.yourname.desktop로 
 
 **5. Tauri 파일 설정**
 ```bash
-관리자 권한 실행
-tauri build
+tauri build # 관리자 권한 실행으로 cmd 실행하여 빌드 
 ```
 앱은 `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`에 있음
 
