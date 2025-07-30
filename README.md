@@ -26,13 +26,13 @@ E.M.Pilot는 Gmail 계정과 연동하여 이메일을 자동으로 분류, 요�
 
 ## 팀 구성원
 
-| 이름   | 이메일                     | 퀄컴ID                     |
-|--------|----------------------------|----------------------------|
-| 최수운 | csw21c915@gmail.com        | csw21c915@gmail.com        |
-| 강인태 | rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
-| 김관영 | kwandol02@naver.com        | kwandol02@naver.com        |
-| 김진성 | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
-| 이상민 | haleeho2@naver.com         | haleeho2@naver.com         |
+| 이름   | 영문 이름    |  이메일                     | 퀄컴ID                     |
+|--------|--------------|------------------------------|----------------------------|
+| 최수운 | Choi Sooun    | csw21c915@gmail.com        | csw21c915@gmail.com        |
+| 강인태 | Kang Intae    | rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
+| 김관영 | Kim Kwanyoung | kwandol02@naver.com        | kwandol02@naver.com        |
+| 김진성 | Kim Jinsung   | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
+| 이상민 | Lee Sangmin   | haleeho2@naver.com         | haleeho2@naver.com         |
 
 ---
 
