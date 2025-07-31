@@ -1,3 +1,4 @@
+// App.jsx (TodoDashboard 통합된 버전)
 import React, { useState, useEffect, useRef } from "react";
 import Sidebar from "./components/Sidebar";
 import SearchBar from "./components/SearchBar";
@@ -8,6 +9,7 @@ import GmailSummaryForm from "./components/GmailSummaryForm";
 import Login from "./components/Login";
 import WriteMail from "./components/WriteMail";
 import Chatbot from "./components/Chatbot";
+import TodoDashboard from "./components/TodoDashboard";  // ✅ 새로 추가
 
 // ✅ 날짜 파싱 함수를 App 레벨로 이동하여 일관성 확보
 const parseDate = (dateStr) => {
@@ -250,11 +252,13 @@ const App = () => {
     }
   };
 
+  // ✅ 태그 매핑 (할일 관리 추가)
   const tagMap = {
     "전체 메일": null, // all
     "중요 메일": ["university.", "company."], // 대학교 + 회사기업
     스팸: "spam mail.",
     "보안 경고": "security alert.",
+    "할일 관리": "todo_dashboard", // ✅ 새로 추가
     "챗봇 AI": "chatbot", // 챗봇 추가
   };
 
@@ -308,18 +312,24 @@ const App = () => {
       />
 
       <div className="main-panel">
-        <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
+        {/* ✅ 할일 관리와 챗봇이 아닐 때만 검색바와 새로고침 버튼 표시 */}
+        {selectedTag !== "할일 관리" && selectedTag !== "챗봇 AI" && (
+          <>
+            <SearchBar searchTerm={searchTerm} onSearch={setSearchTerm} />
+            
+            {/* ✅ 새로고침 버튼 */}
+            <div style={{ padding: "8px 16px" }}>
+              <button
+                className="setting-button"
+                onClick={() => gmailRef.current?.refetch()}
+              >
+                🔄 메일 새로고침
+              </button>
+            </div>
+          </>
+        )}
 
-        {/* ✅ 새로고침 버튼 */}
-        <div style={{ padding: "8px 16px" }}>
-          <button
-            className="setting-button"
-            onClick={() => gmailRef.current?.refetch()}
-          >
-            🔄 메일 새로고침
-          </button>
-        </div>
-
+        {/* ✅ 메인 컨텐츠 렌더링 */}
         {isComposing ? (
           <WriteMail
             onBack={() => setIsComposing(false)}
@@ -327,7 +337,14 @@ const App = () => {
             appPassword={appPassword}
             selectedEmail={selectedEmail}
           />
+        ) : selectedTag === "할일 관리" ? (
+          // ✅ 할일 관리 대시보드
+          <TodoDashboard 
+            email={email} 
+            appPassword={appPassword} 
+          />
         ) : selectedTag === "챗봇 AI" ? (
+          // 챗봇
           <Chatbot email={email} appPassword={appPassword} />
         ) : viewingEmail ? (
           <div className="mail-content">
@@ -385,12 +402,8 @@ const App = () => {
               {isGeneratingAI ? "🤖 AI 답장 생성 중..." : "🤖 AI 답장"}
             </button>
           </div>
-        ) : selectedTag === "챗봇 AI" ? (
-          // 챗봇 모드에서는 메일 리스트를 보여주지 않음
-          <div className="chatbot-placeholder">
-            <p>🤖 AI 어시스턴트와 대화해보세요!</p>
-          </div>
         ) : (
+          // 메일 리스트
           <MailList
             emails={filteredEmails}
             onSelectEmail={(emailItem) => {
@@ -403,104 +416,110 @@ const App = () => {
         )}
       </div>
 
-      <MailDetail email={selectedEmail} />
+      {/* ✅ MailDetail은 할일 관리와 챗봇이 아닐 때만 표시 */}
+      {selectedTag !== "할일 관리" && selectedTag !== "챗봇 AI" && (
+        <MailDetail email={selectedEmail} />
+      )}
 
-      <div className="right-panel">
-        <GmailSummaryForm
-          ref={gmailRef}
-          email={email}
-          appPassword={appPassword}
-          after={lastFetchTime}
-          setEmails={(newMails) => {
-            setEmails((prev) => {
-              console.log("새로운 메일:", newMails.length, "개");
-              console.log("기존 메일:", prev.length, "개");
+      {/* ✅ GmailSummaryForm은 할일 관리와 챗봇이 아닐 때만 작동 */}
+      {selectedTag !== "할일 관리" && selectedTag !== "챗봇 AI" && (
+        <div className="right-panel">
+          <GmailSummaryForm
+            ref={gmailRef}
+            email={email}
+            appPassword={appPassword}
+            after={lastFetchTime}
+            setEmails={(newMails) => {
+              setEmails((prev) => {
+                console.log("새로운 메일:", newMails.length, "개");
+                console.log("기존 메일:", prev.length, "개");
 
-              // 첫 로딩인지 확인
-              const isFirstLoad = prev.length === 0;
+                // 첫 로딩인지 확인
+                const isFirstLoad = prev.length === 0;
 
-              if (isFirstLoad) {
-                // ✅ 첫 로딩: 새 메일들만 날짜순 정렬해서 반환하고 모든 메일을 MailDetail에 표시
-                console.log("첫 로딩 - 새 메일들을 날짜순 정렬");
-                const sorted = newMails.sort((a, b) => {
-                  const dateA = parseDate(a.date);
-                  const dateB = parseDate(b.date);
-                  return dateB - dateA; // 내림차순: 최신이 위로
-                });
-                console.log("첫 로딩 정렬 완료:", sorted.length, "개");
-                // 첫 로딩 시에는 모든 메일을 MailDetail에 표시
-                setSelectedEmail(sorted);
-                return sorted;
-              } else {
-                // ✅ 새로고침: 기존 메일보다 더 최신인 메일만 필터링
-                console.log("새로고침 - 기존 메일보다 최신인 메일만 필터링");
-
-                // 기존 메일 중 가장 최신 날짜 찾기
-                const latestExistingDate =
-                  prev.length > 0
-                    ? Math.max(
-                        ...prev.map((mail) => parseDate(mail.date).getTime())
-                      )
-                    : 0;
-
-                console.log(
-                  "기존 메일 중 최신 날짜:",
-                  new Date(latestExistingDate)
-                );
-
-                // 기존 메일보다 더 최신인 메일만 필터링
-                const reallyNewMails = newMails.filter((mail) => {
-                  const mailDate = parseDate(mail.date).getTime();
-                  return mailDate > latestExistingDate;
-                });
-
-                console.log("진짜 새로운 메일:", reallyNewMails.length, "개");
-
-                if (reallyNewMails.length > 0) {
-                  // 1. 진짜 새로운 메일들을 날짜순으로 정렬 (최신 먼저)
-                  const sortedNewMails = reallyNewMails.sort((a, b) => {
+                if (isFirstLoad) {
+                  // ✅ 첫 로딩: 새 메일들만 날짜순 정렬해서 반환하고 모든 메일을 MailDetail에 표시
+                  console.log("첫 로딩 - 새 메일들을 날짜순 정렬");
+                  const sorted = newMails.sort((a, b) => {
                     const dateA = parseDate(a.date);
                     const dateB = parseDate(b.date);
-                    return dateB - dateA;
+                    return dateB - dateA; // 내림차순: 최신이 위로
                   });
-
-                  // 2. 새 메일을 기존 메일 앞에 추가
-                  const combined = [...sortedNewMails, ...prev];
-
-                  // 3. 중복 제거 (subject + from + date 기준)
-                  const seen = new Set();
-                  const unique = combined.filter((mail) => {
-                    const key = `${mail.subject}-${mail.from}-${mail.date}`;
-                    if (seen.has(key)) return false;
-                    seen.add(key);
-                    return true;
-                  });
-
-                  console.log("새로고침 완료:", unique.length, "개");
-                  console.log("맨 위 메일 날짜:", unique[0]?.date);
-
-                  // ✅ 진짜 새로운 메일들만 MailDetail에 표시
-                  setSelectedEmail(sortedNewMails);
-
-                  return unique;
+                  console.log("첫 로딩 정렬 완료:", sorted.length, "개");
+                  // 첫 로딩 시에는 모든 메일을 MailDetail에 표시
+                  setSelectedEmail(sorted);
+                  return sorted;
                 } else {
-                  console.log("새로운 메일이 없습니다.");
-                  // 새로운 메일이 없으면 기존 상태 유지
-                  return prev;
+                  // ✅ 새로고침: 기존 메일보다 더 최신인 메일만 필터링
+                  console.log("새로고침 - 기존 메일보다 최신인 메일만 필터링");
+
+                  // 기존 메일 중 가장 최신 날짜 찾기
+                  const latestExistingDate =
+                    prev.length > 0
+                      ? Math.max(
+                          ...prev.map((mail) => parseDate(mail.date).getTime())
+                        )
+                      : 0;
+
+                  console.log(
+                    "기존 메일 중 최신 날짜:",
+                    new Date(latestExistingDate)
+                  );
+
+                  // 기존 메일보다 더 최신인 메일만 필터링
+                  const reallyNewMails = newMails.filter((mail) => {
+                    const mailDate = parseDate(mail.date).getTime();
+                    return mailDate > latestExistingDate;
+                  });
+
+                  console.log("진짜 새로운 메일:", reallyNewMails.length, "개");
+
+                  if (reallyNewMails.length > 0) {
+                    // 1. 진짜 새로운 메일들을 날짜순으로 정렬 (최신 먼저)
+                    const sortedNewMails = reallyNewMails.sort((a, b) => {
+                      const dateA = parseDate(a.date);
+                      const dateB = parseDate(b.date);
+                      return dateB - dateA;
+                    });
+
+                    // 2. 새 메일을 기존 메일 앞에 추가
+                    const combined = [...sortedNewMails, ...prev];
+
+                    // 3. 중복 제거 (subject + from + date 기준)
+                    const seen = new Set();
+                    const unique = combined.filter((mail) => {
+                      const key = `${mail.subject}-${mail.from}-${mail.date}`;
+                      if (seen.has(key)) return false;
+                      seen.add(key);
+                      return true;
+                    });
+
+                    console.log("새로고침 완료:", unique.length, "개");
+                    console.log("맨 위 메일 날짜:", unique[0]?.date);
+
+                    // ✅ 진짜 새로운 메일들만 MailDetail에 표시
+                    setSelectedEmail(sortedNewMails);
+
+                    return unique;
+                  } else {
+                    console.log("새로운 메일이 없습니다.");
+                    // 새로운 메일이 없으면 기존 상태 유지
+                    return prev;
+                  }
                 }
+              });
+
+              // ✅ 4. 메일 선택 상태 갱신은 위에서 이미 처리됨
+              if (newMails.length > 0) {
+                // 이미 위 로직에서 setSelectedEmail 처리됨
               }
-            });
 
-            // ✅ 4. 메일 선택 상태 갱신은 위에서 이미 처리됨
-            if (newMails.length > 0) {
-              // 이미 위 로직에서 setSelectedEmail 처리됨
-            }
-
-            // ✅ 5. 새로고침 시점 저장
-            setLastFetchTime(new Date().toISOString());
-          }}
-        />
-      </div>
+              // ✅ 5. 새로고침 시점 저장
+              setLastFetchTime(new Date().toISOString());
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
