@@ -6,7 +6,7 @@ const Chatbot = ({ email, appPassword }) => {
     {
       type: "bot",
       content:
-        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n✨ 새로운 기능: 이메일 검색이 추가되었습니다!\n예시: '김철수님의 메일을 찾아주세요' 또는 'abc@gmail.com에서 온 메일'",
+        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n✨ 새로운 기능: 이메일 검색이 추가되었습니다!\n예시: 'find abc@gmail.com'",
       timestamp: new Date(),
     },
   ]);
