@@ -1,111 +1,110 @@
-# E.M.Pilot - Frontend
+# MailPilot AI
 
-**AI 기반 이메일 관리 데스크탑 앱 (Tauri 기반)**
+**AI-powered Email Management Desktop App (Electron-based)**
 
-> 로컬 PC NPU를 활용한, 오픈소스 on-device 대화형 AI 이메일 클라이언트
-
----
-
-## 응용 프로그램에 대한 설명
-
-E.M.Pilot는 Gmail 계정과 연동하여 이메일을 자동으로 분류, 요약하고 AI 기반 답장을 생성하고, 이메일 사용자들이 지금까지 활용하지 못했던 기능이나, 활용에 편의를 더할 기능을 대화형 인터페이스를 활용하여 제공해주는 스마트 이메일 관리 데스크탑 애플리케이션입니다. React, Flask 프레임워크를 기반으로 Tauri을 활용하여 개발한 데스크탑 앱으로, 로컬 PC의 NPU를 활용하여 AI 모델을 실행하여 클라우드 의존성을 최소화했습니다.
-
-### AI 모델을 활용한 주요 기능
-
-| 기능                         | 설명                                      |
-| ---------------------------- | ----------------------------------------- |
-| 스팸/중요/보낸/내게쓴/필터링  | 탭 별로 메일을 자동 분류하여 확인 가능    |
-| 메일 요약 보기               | 리스트에서 메일 내용을 요약으로 미리 확인 |
-| 보낸 사람 검색 기능          | 보낸 사람 기준 해당 메일 필터링           |
-| To-do 표시                  | 사용자의 주요 일정을 자동으로 정리하여 제공 |
-| 데스크탑 앱                  | Tauri 기반의 독립 실행형 앱 구성       |
-| AI 답장 생성                 | 수신된 이메일에 대한 자동 답장 생성       |
-| 대화형 인퍼페이스            | 문법 교정, 캘린더 생성, 검색 기능 요청  |
+> Local PC NPU-powered, open-source on-device conversational AI email client
 
 ---
 
-## 팀 구성원
+## Application Description
 
-| 이름   | 영문 이름    |  이메일                     | 퀄컴ID                     |
-|--------|--------------|------------------------------|----------------------------|
-| 최수운 | Choi Sooun    | csw21c915@gmail.com        | csw21c915@gmail.com        |
-| 강인태 | Kang Intae    | rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
-| 김관영 | Kim Kwanyoung | kwandol02@naver.com        | kwandol02@naver.com        |
-| 김진성 | Kim Jinsung   | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
-| 이상민 | Lee Sangmin   | haleeho2@naver.com         | haleeho2@naver.com         |
+MailPilot AI is a smart email management desktop application that integrates with Gmail accounts to automatically classify and summarize emails, generate AI-based replies, and provides features that email users haven't been able to utilize before or adds convenience to their usage through a conversational interface. It's a desktop app developed using React and Flask frameworks with Electron, utilizing local PC NPU to run AI models, minimizing cloud dependency.
+
+### Key Features Using AI Models
+
+| Feature                          | Description                                        |
+| -------------------------------- | -------------------------------------------------- |
+| Spam/Important/Sent/To Me/Filter | Automatically categorize emails by tabs           |
+| Email Summary View               | Preview email content summaries in the list       |
+| Sender Search Function           | Filter emails by sender                            |
+| To-do Display                   | Automatically organize and provide user's key schedules |
+| Desktop App                      | Standalone app built with Electron                |
+| AI Reply Generation              | Generate automatic replies to received emails     |
+| Conversational Interface         | Grammar correction, calendar creation, search features |
 
 ---
 
-## 기술 스택
+## Team Members
+
+| Name      | Email                       | Qualcomm ID                |
+|-----------|-----------------------------|-----------------------------|
+| Choi Sooun| csw21c915@gmail.com        | csw21c915@gmail.com        |
+| Kang Intae| rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
+| Kim Kwanyoung| kwandol02@naver.com     | kwandol02@naver.com        |
+| Kim Jinsung| jinsung030405@gmail.com   | jinsung030405@gmail.com    |
+| Lee Sangmin| haleeho2@naver.com        | haleeho2@naver.com         |
+
+---
+
+## Technology Stack
 
 ### Backend (Python Flask API)
-- **Flask**: RESTful API 서버
-- **Transformers**: Hugging Face 모델 (BART, Qwen)
-- **Nomic**: 임베딩 및 분류
-- **scikit-learn**: 코사인 유사도 계산
-- **imaplib/smtplib**: Gmail 연동
+- **Flask**: RESTful API server
+- **Transformers**: Hugging Face models (BART, Qwen)
+- **Nomic**: Embedding and classification
+- **scikit-learn**: Cosine similarity calculation
+- **imaplib/smtplib**: Gmail integration
 
-### Frontend (Tauri Desktop App)
-- **Tauri**: 크로스 플랫폼 데스크탑 앱 프레임워크
-- **HTML/CSS/JavaScript**: 웹 기반 UI
+### Frontend (Electron Desktop App)
+- **Electron**: Cross-platform desktop app framework
+- **HTML/CSS/JavaScript**: Web-based UI
 
 ---
 
-## 응용 프로그램 설치 방법
+## Application Installation Guide
 
-### 0. Gmail 계정 설정
-- Gmail 계정
-- **2단계 인증 활성화** 필수
-- **앱 비밀번호** 생성 ([Google 계정 설정](https://myaccount.google.com/apppasswords)에서 생성)
-- **앱 비밀번호는 따로 저장해두기**
+### 0. Gmail Account Setup
+- Gmail account
+- **2-step verification activation** required
+- **App password** generation (create at [Google Account Settings](https://myaccount.google.com/apppasswords))
+- **Save the app password separately**
 
-### 1. 백엔드 API 서버 설정
-백엔드 설치 및 실행 방법은 다음 저장소에서 확인하세요:
+### 1. Backend API Server Setup
+For backend installation and execution instructions, check the following repository:
 
-**🔗 [MailPilot 백엔드 저장소](https://github.com/rkddlsxo/MailPilot_back.git)**
+**🔗 [MailPilot Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git)**
 
-### 2-1. 웹 환경 설치
+### 2-1. Web Environment Installation
 
-**1. 프로젝트 클론**
+**1. Clone Project**
 ```bash
 git clone https://github.com/jinsunghub/copilot_project.git
 cd copilot_project
 cd mailpilot-ai-dev
 ```
 
-**2. 의존성 설치**
+**2. Install Dependencies**
 ```bash
 npm install
 ```
 
-**3. 개발 서버 실행**
+**3. Run Development Server**
 ```bash
 npm run dev
 ```
 
-**4. REACT 웹 실행**
+**4. Run REACT Web**
 ```bash
 npm start
 ```
 
-### 2-2. 앱 환경 설치(아직 정리 안함)
+### 2-2. App Environment Installation (Not yet organized)
 
-**1. 프로젝트 클론**
+**1. Clone Project**
 ```bash
 git clone https://github.com/jinsunghub/copilot_project.git
 cd copilot_project
 cd mailpilot-ai-dev
 ```
 
-**2. 의존성 설치**
+**2. Install Dependencies**
 ```bash
 npm install
 ```
 
-**3. Tauri 설치**
-
-사전에 rustup-init.exe 파일 설치
+**3. Install Tauri**
 ```bash
+rustup-init.exe
 npm install -g @tauri-apps/cli
 npm install @tauri-apps/api
 tauri init
@@ -117,54 +116,56 @@ tauri init
 - Frontend run command: npm run dev
 - Frontend build command: npm run build
 
-**4. Tauri 파일 설정**
+**4. Run Tauri and Change Files**
 ```bash
-tauri build # '관리자 권한 실행'으로 cmd 실행하여 빌드 
+tauri dev
 ```
-앱은 `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`에 있음
+Change com.tauri.dev to com.yourname.desktop in src-tauri/tauri.conf.json file
+
+**5. Tauri File Configuration**
+```bash
+tauri build
+```
+Run with administrator privileges, app is located at `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`
 
 ---
 
-## 실행/사용 방법
+## Execution/Usage Instructions
 
-### 로그인
-1. 데스크탑 앱에서 Gmail 주소 입력
-2. Gmail 앱 비밀번호 입력 (일반 비밀번호 아님!)
-3. 로그인 버튼 클릭
+### Login
+1. Enter Gmail address in the desktop app
+2. Enter Gmail app password (not your regular password!)
+3. Click login button
 
-### 이메일 관리
-- **새로고침** 버튼으로 최근 이메일 가져오기
-- 탭별로 자동 분류된 이메일 확인 (스팸/중요/보낸함 등)
-- 이메일 리스트에서 자동 생성된 요약 확인
-- 대화형 인터페이스를 활용하여 원하는 기능 사용 가능(영어로 문의)
+### Email Management
+- Use **Refresh** button to fetch recent emails
+- Check automatically categorized emails by tabs (Spam/Important/Sent, etc.)
+- View auto-generated summaries in email list
+- Use conversational interface for desired features
 
-### AI 기능 활용
-- **답장 생성**: 이메일 선택 후 "AI 답장" 버튼
-- **요약 및 분류**: 자동으로 이메일 요약 및 분류 내용 제공
-- **챗봇**: 맞춤법 교정, 메일 찾기 등
-
----
-
-## ⚠️ 주의사항
-
-### 보안
-- **절대 일반 Gmail 비밀번호를 사용하지 마세요**
-- 반드시 앱 비밀번호를 생성하여 사용
-- Gmail 2단계 인증이 활성화되어 있어야 함
-
-### 시스템 요구사항
-- 백엔드 API 서버가 먼저 실행되어 있어야 함
-- 인터넷 연결 필수 (Gmail 접속 및 AI 모델 사용)
-
-### 영어 기반 프로그램
-- 현재 프로그램은 English 기반 프로그램으로, 프로그램 사용시에 영어를 사용할 것을 지정함.
-- 한국어 및 기타 언어를 사용할 시에, 오류가 발생할 경우가 잦음.
+### AI Feature Utilization
+- **Reply Generation**: Select email and click "AI Reply" button
+- **Summary and Classification**: Automatically provides email summary and classification content
+- **Chatbot**: Grammar correction, email search, etc.
 
 ---
 
-## 라이선스
+## ⚠️ Important Notes
 
-### MIT 라이선스
+### Security
+- **Never use your regular Gmail password**
+- Must create and use an app password
+- Gmail 2-step verification must be enabled
+
+### System Requirements
+- Backend API server must be running first
+- Internet connection required (for Gmail access and AI model usage)
+
+---
+
+## License
+
+### MIT License
 
 ```
 MIT License
@@ -190,22 +191,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### 기타 오픈소스 라이선스
+### Other Open Source Licenses
 
-이 프로젝트는 다음 오픈소스 라이브러리들을 사용합니다:
+This project uses the following open source libraries:
 
 **Frontend Dependencies**
-- **Tauri**: MIT License
+- **Electron**: MIT License
 - **Bootstrap**: MIT License
 - **Font Awesome**: Font Awesome Free License
 
-**Backend Dependencies (API 서버)**
+**Backend Dependencies (API Server)**
 
-자세한 백엔드 의존성 및 라이선스 정보는 [백엔드 저장소](https://github.com/rkddlsxo/MailPilot_back.git)를 참조하세요:
+For detailed backend dependencies and license information, refer to the [backend repository](https://github.com/rkddlsxo/MailPilot_back.git):
 - **Flask**: BSD License
 - **Transformers (Hugging Face)**: Apache License 2.0
 - **PyTorch**: BSD License
 - **scikit-learn**: BSD License
-- **Nomic**: Proprietary License (API 서비스)
+- **Nomic**: Proprietary License (API service)
 
-각 라이브러리의 전체 라이선스 텍스트는 해당 프로젝트의 공식 저장소에서 확인할 수 있습니다.
+Full license text for each library can be found in their respective official repositories.
