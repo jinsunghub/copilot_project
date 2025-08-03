@@ -1,70 +1,68 @@
-# MailPilot AI
+📄 If you need the Korean version of this README, please see **README_KOR.md**.
 
-**AI-powered Email Management Desktop App (Electron-based)**
+# E.M.Pilot
 
-> Local PC NPU-powered, open-source on-device conversational AI email client
+**AI Email Management Desktop App**
+
+> An open-source on-device conversational AI email client desktop application that leverages your local PC's NPU
 
 ---
 
 ## Application Description
 
-MailPilot AI is a smart email management desktop application that integrates with Gmail accounts to automatically classify and summarize emails, generate AI-based replies, and provides features that email users haven't been able to utilize before or adds convenience to their usage through a conversational interface. It's a desktop app developed using React and Flask frameworks with Electron, utilizing local PC NPU to run AI models, minimizing cloud dependency.
+MailPilot AI is an AI email management application that integrates with Gmail accounts to automatically classify and summarize emails, generate AI-based auto-replies, and other features. It adds convenience to email usage by providing functions that email users have not been able to utilize before, offering these features through a conversational interface.
+
+This desktop app was developed using React and Flask frameworks with Tauri, running AI models on Qualcomm Copilot+ PC NPUs to minimize dependency on existing cloud-based environments.
 
 ### Key Features Using AI Models
 
-| Feature                          | Description                                        |
-| -------------------------------- | -------------------------------------------------- |
-| Spam/Important/Sent/To Me/Filter | Automatically categorize emails by tabs           |
-| Email Summary View               | Preview email content summaries in the list       |
-| Sender Search Function           | Filter emails by sender                            |
-| To-do Display                   | Automatically organize and provide user's key schedules |
-| Desktop App                      | Standalone app built with Electron                |
-| AI Reply Generation              | Generate automatic replies to received emails     |
-| Conversational Interface         | Grammar correction, calendar creation, search features |
+| Feature | Description |
+| ------- | ----------- |
+| Spam/Important/Sent/Self-sent/Filtered | Automatically classify and view emails by tabs |
+| Email Summary View | Preview email content summaries in the list view |
+| Sender Search Function | Filter emails by sender |
+| To-Do (Task Management) Display | Automatically organize and provide user's key schedules |
+| Attachment Summary Function | Automatically summarize attached images and document content |
+| AI Auto-Reply Generation | Generate automatic replies for received emails |
+| Conversational Interface | Grammar correction, calendar content addition, search functions, and other email management features |
 
 ---
 
 ## Team Members
 
-| Name      | Email                       | Qualcomm ID                |
-|-----------|-----------------------------|-----------------------------|
-| Choi Sooun| csw21c915@gmail.com        | csw21c915@gmail.com        |
-| Kang Intae| rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
-| Kim Kwanyoung| kwandol02@naver.com     | kwandol02@naver.com        |
-| Kim Jinsung| jinsung030405@gmail.com   | jinsung030405@gmail.com    |
-| Lee Sangmin| haleeho2@naver.com        | haleeho2@naver.com         |
+| Name | Email | Qualcomm ID |
+|------|-------|-------------|
+| 최수운 | csw21c915@gmail.com | csw21c915@gmail.com |
+| 강인태 | rkddlsxo12345@naver.com | rkddlsxo12345@naver.com |
+| 김관영 | kwandol02@naver.com | kwandol02@naver.com |
+| 김진성 | jinsung030405@gmail.com | jinsung030405@gmail.com |
+| 이상민 | haleeho2@naver.com | haleeho2@naver.com |
 
 ---
 
-## Technology Stack
+## Tech Stack
 
-### Backend (Python Flask API)
-- **Flask**: RESTful API server
-- **Transformers**: Hugging Face models (BART, Qwen)
-- **Nomic**: Embedding and classification
-- **scikit-learn**: Cosine similarity calculation
-- **imaplib/smtplib**: Gmail integration
-
-### Frontend (Electron Desktop App)
-- **Electron**: Cross-platform desktop app framework
-- **HTML/CSS/JavaScript**: Web-based UI
+### Frontend (Tauri Desktop App)
+- **Tauri**: Cross-platform desktop app framework
+- **React**: Web framework
+- **HTML/CSS/JavaScript**: Web-based UI design languages
 
 ---
 
-## Application Installation Guide
+## Application Installation and Execution Guide
 
 ### 0. Gmail Account Setup
 - Gmail account
 - **2-step verification activation** required
-- **App password** generation (create at [Google Account Settings](https://myaccount.google.com/apppasswords))
-- **Save the app password separately**
+- **App password** creation (create at [Google Account Settings](https://myaccount.google.com/apppasswords))
+- **Store the app password separately**
 
-### 1. Backend API Server Setup
-For backend installation and execution instructions, check the following repository:
+### 1. Backend API Server Installation and Execution
+For backend installation and execution instructions, please check the following repository:
 
-**🔗 [MailPilot Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git)**
+**[MailPilot Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git)**
 
-### 2-1. Web Environment Installation
+### 2. Web Environment Installation and Execution (Web Usage)
 
 **1. Clone Project**
 ```bash
@@ -83,12 +81,12 @@ npm install
 npm run dev
 ```
 
-**4. Run REACT Web**
+**4. Start React Web**
 ```bash
 npm start
 ```
 
-### 2-2. App Environment Installation (Not yet organized)
+### 3. App Creation and Execution (App Usage)
 
 **1. Clone Project**
 ```bash
@@ -116,37 +114,39 @@ tauri init
 - Frontend run command: npm run dev
 - Frontend build command: npm run build
 
-**4. Run Tauri and Change Files**
+**4. Run Tauri and Change App Location**
+Process for app creation, unnecessary after app is created
 ```bash
 tauri dev
 ```
 Change com.tauri.dev to com.yourname.desktop in src-tauri/tauri.conf.json file
 
-**5. Tauri File Configuration**
+**5. Tauri File Settings**
+After changing web-based files, you can rebuild and use
 ```bash
 tauri build
 ```
-Run with administrator privileges, app is located at `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`
+Administrator privileges recommended. The app is located at `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`.
 
 ---
 
-## Execution/Usage Instructions
+## Execution/Usage Guide
 
 ### Login
 1. Enter Gmail address in the desktop app
-2. Enter Gmail app password (not your regular password!)
+2. Enter Gmail app password (not regular password!)
 3. Click login button
 
 ### Email Management
-- Use **Refresh** button to fetch recent emails
-- Check automatically categorized emails by tabs (Spam/Important/Sent, etc.)
-- View auto-generated summaries in email list
-- Use conversational interface for desired features
+- Fetch recent emails with the 'Refresh' button
+- Check emails classified by tabs and task management (Spam/Important/Sent, etc.)
+- Check summary content in the email list
+- Use various functions through conversational interface
 
-### AI Feature Utilization
+### AI Feature Usage
 - **Reply Generation**: Select email and click "AI Reply" button
-- **Summary and Classification**: Automatically provides email summary and classification content
-- **Chatbot**: Grammar correction, email search, etc.
+- **Summary and Classification**: Automatically provide email content and attachment summaries, email keyword classification content
+- **Chatbot**: Grammar correction, email search, task addition, search, and various other features for email users
 
 ---
 
@@ -154,12 +154,17 @@ Run with administrator privileges, app is located at `C:\copilotAI\copilot_proje
 
 ### Security
 - **Never use your regular Gmail password**
-- Must create and use an app password
-- Gmail 2-step verification must be enabled
+- Must use app password
+- Gmail 2-step verification must be activated
 
 ### System Requirements
 - Backend API server must be running first
 - Internet connection required (for Gmail access and AI model usage)
+
+### Token Issuance Required
+- Currently requires tokens from Hugging Face due to lack of Qualcomm devices, as specified in app.py
+- Need to obtain tokens from Nomic and Hugging Face and modify accordingly
+- Future plans to use Qualcomm AI hub to download models for local use
 
 ---
 
@@ -195,18 +200,14 @@ SOFTWARE.
 
 This project uses the following open source libraries:
 
-**Frontend Dependencies**
-- **Electron**: MIT License
+**Frontend**
+
+- **Tauri**: MIT License
 - **Bootstrap**: MIT License
 - **Font Awesome**: Font Awesome Free License
 
-**Backend Dependencies (API Server)**
+**Backend**
 
-For detailed backend dependencies and license information, refer to the [backend repository](https://github.com/rkddlsxo/MailPilot_back.git):
-- **Flask**: BSD License
-- **Transformers (Hugging Face)**: Apache License 2.0
-- **PyTorch**: BSD License
-- **scikit-learn**: BSD License
-- **Nomic**: Proprietary License (API service)
+For detailed backend license information, please refer to the [Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git).
 
-Full license text for each library can be found in their respective official repositories.
+The complete license text for each library can be found in the official repositories of each project.
