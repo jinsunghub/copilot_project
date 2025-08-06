@@ -48,7 +48,7 @@ const App = () => {
   const gmailRef = useRef(null); // ✅ 새로고침 버튼용 ref
 
   // ✅ 백엔드 로그인 API 호출
-  const loginToBackend = async (userEmail) => {
+  const loginToBackend = async (userEmail, userPassword) => {
     try {
       console.log(`[🔑 백엔드 로그인] ${userEmail}`);
       const response = await fetch("http://localhost:5001/api/login", {
@@ -64,6 +64,22 @@ const App = () => {
 
       if (response.ok && data.success) {
         console.log("[✅ 백엔드 로그인 성공]", data.session_id);
+        // 📌 저장된 이메일 불러오기 추가
+        const emailRes = await fetch("http://localhost:5001/api/emails/stored", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: userEmail }),
+        });
+
+        const emailData = await emailRes.json();
+        if (emailData.emails) {
+          console.log("📬 저장된 메일:", emailData.emails.length);
+          setEmails(emailData.emails);  // 📌 이메일 상태에 저장
+        }
+
+        setEmail(userEmail);              // 📌 이메일 상태 저장
+        setAppPassword(userPassword);     // 📌 비밀번호 상태 저장
+        setIsLoggedIn(true);              // 📌 로그인 상태 true로
         return true;
       } else {
         console.error("[❗백엔드 로그인 실패]", data.error);
@@ -107,7 +123,8 @@ const App = () => {
   const handleLogin = async (userEmail, userPassword) => {
     try {
       // 1. 백엔드 세션 생성
-      const backendLoginSuccess = await loginToBackend(userEmail);
+      const backendLoginSuccess = await loginToBackend(userEmail, userPassword);
+
 
       if (backendLoginSuccess) {
         // 2. 프론트엔드 상태 설정
