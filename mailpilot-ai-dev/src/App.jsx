@@ -57,7 +57,8 @@ const App = () => {
           "Content-Type": "application/json",
         },
         credentials: "include", // 세션 쿠키 포함
-        body: JSON.stringify({ email: userEmail }),
+        body: JSON.stringify({ email: userEmail,
+          app_password: userPassword}),
       });
 
       const data = await response.json();
@@ -68,7 +69,8 @@ const App = () => {
         const emailRes = await fetch("http://localhost:5001/api/emails/stored", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail }),
+          body: JSON.stringify({ email: userEmail,
+            app_password: userPassword,}),
         });
 
         const emailData = await emailRes.json();
