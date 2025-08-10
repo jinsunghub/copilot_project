@@ -597,7 +597,7 @@ input[type="checkbox"] {
 
 /* 첨부파일이 있는 메일 아이템 강조 */
 .mail-item.has-attachments {
-  border-left: 4px solid #2196F3;
+  border-left: 4px solid #2196f3;
   background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
 }
 
@@ -620,12 +620,12 @@ input[type="checkbox"] {
   .attachment-tags {
     gap: 2px;
   }
-  
+
   .yolo-object-tag {
     font-size: 9px;
     padding: 1px 4px;
   }
-  
+
   .attachment-count-label {
     font-size: 10px;
     padding: 2px 6px;
@@ -654,24 +654,24 @@ input[type="checkbox"] {
 }
 
 /* 객체별 특별 스타일 (선택적) */
-.yolo-tag-person { 
-  background: linear-gradient(135deg, #4CAF50, #388E3C) !important; 
+.yolo-tag-person {
+  background: linear-gradient(135deg, #4caf50, #388e3c) !important;
 }
 
-.yolo-tag-car { 
-  background: linear-gradient(135deg, #2196F3, #1976D2) !important; 
+.yolo-tag-car {
+  background: linear-gradient(135deg, #2196f3, #1976d2) !important;
 }
 
-.yolo-tag-animal { 
-  background: linear-gradient(135deg, #FF9800, #F57C00) !important; 
+.yolo-tag-animal {
+  background: linear-gradient(135deg, #ff9800, #f57c00) !important;
 }
 
-.yolo-tag-electronics { 
-  background: linear-gradient(135deg, #9C27B0, #7B1FA2) !important; 
+.yolo-tag-electronics {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2) !important;
 }
 
-.yolo-tag-furniture { 
-  background: linear-gradient(135deg, #795548, #5D4037) !important; 
+.yolo-tag-furniture {
+  background: linear-gradient(135deg, #795548, #5d4037) !important;
 }
 
 /* 기존 App.css 하단에 추가할 스타일들 */
@@ -725,13 +725,18 @@ input[type="checkbox"] {
 }
 
 .document-file-tag::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -794,7 +799,7 @@ input[type="checkbox"] {
 
 /* 첨부파일이 있는 메일 아이템 개선 */
 .mail-item.has-attachments {
-  border-left: 4px solid #2196F3;
+  border-left: 4px solid #2196f3;
   background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
   position: relative;
 }
@@ -810,8 +815,13 @@ input[type="checkbox"] {
 }
 
 @keyframes paperclipBounce {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-3px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
 /* 문서 모달 스타일 */
@@ -952,7 +962,7 @@ input[type="checkbox"] {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 12px;
   border-radius: 8px;
-  font-family: 'Monaco', 'Menlo', monospace;
+  font-family: "Monaco", "Menlo", monospace;
   font-size: 12px;
   max-height: 200px;
   overflow: auto;
@@ -1004,24 +1014,24 @@ input[type="checkbox"] {
   .attachment-tags {
     gap: 4px;
   }
-  
+
   .document-file-tag,
   .yolo-object-tag {
     font-size: 9px;
     padding: 2px 5px;
   }
-  
+
   .attachment-count-label {
     font-size: 10px;
     padding: 2px 6px;
   }
-  
+
   .document-modal-content {
     margin: 20px;
     max-width: calc(100vw - 40px);
     padding: 16px;
   }
-  
+
   .document-modal-title {
     font-size: 18px;
   }
@@ -1034,12 +1044,12 @@ input[type="checkbox"] {
     border-color: #4a5568;
     color: #e2e8f0;
   }
-  
+
   .document-summary-box {
     background: linear-gradient(135deg, #2a4365 0%, #2c5282 100%);
     color: #e2e8f0;
   }
-  
+
   .document-text-preview {
     background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
     border-color: #4a5568;
@@ -1062,11 +1072,12 @@ input[type="checkbox"] {
 }
 
 @keyframes sparkle {
-  0%, 100% { 
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
-  50% { 
+  50% {
     opacity: 0.7;
     transform: scale(1.2);
   }
