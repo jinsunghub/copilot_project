@@ -153,7 +153,7 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
             {selectedDocument.sheets && <p><strong>시트:</strong> {selectedDocument.sheets}개</p>}
           </div>
 
-          {selectedDocument.document_summary && (
+          {(selectedDocument.document_summary || selectedDocument.text_summary) && (
             <div style={{
               backgroundColor: '#f8fafc',
               padding: '16px',
@@ -162,7 +162,9 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
               marginBottom: '16px'
             }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#2d3748' }}>🤖 AI 요약</h4>
-              <p style={{ margin: 0, lineHeight: 1.6 }}>{selectedDocument.document_summary}</p>
+              <p style={{ margin: 0, lineHeight: 1.6 }}>
+                {selectedDocument.document_summary || selectedDocument.text_summary}
+              </p>
             </div>
           )}
 
@@ -186,7 +188,7 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
             </div>
           )}
 
-          {selectedDocument.extracted_text && (
+          {(selectedDocument.extracted_text || selectedDocument.ocr_text) && (
             <div style={{ marginBottom: '16px' }}>
               <h4 style={{ margin: '0 0 8px 0', color: '#2d3748' }}>📝 추출된 텍스트 (미리보기)</h4>
               <div style={{
@@ -199,7 +201,7 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
                 overflow: 'auto',
                 whiteSpace: 'pre-wrap'
               }}>
-                {selectedDocument.extracted_text}
+                {selectedDocument.extracted_text || selectedDocument.ocr_text}
                 {selectedDocument.full_text_available && (
                   <p style={{ color: '#667eea', fontStyle: 'italic', marginTop: '8px' }}>
                     ... 더 많은 텍스트가 있습니다
@@ -238,9 +240,6 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
                 {email.tag === "중요" && (
                   <span className="important-icon">⭐</span>
                 )}
-                {email.tag === "스팸" && (
-                  <span className="spam-label">🚫 스팸</span>
-                )}
                 {email.classification && (
                   <span className="classification-label">
                     ({email.classification.replace(/\.$/, "")})
@@ -278,56 +277,41 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
                     
                     const docInfo = getDocumentInfo(attachment);
                     
-                    // 이미지 파일 (YOLO 객체 표시)
-                    if (attachment.type === 'image' && attachment.yolo_detections?.length > 0) {
+                    // 이미지 파일 (항상 클릭 가능)
+                    if (attachment.type === 'image') {
                       return (
                         <React.Fragment key={`img-${attIndex}`}>
-                          {attachment.yolo_detections
-                            .sort((a, b) => b.confidence - a.confidence)
-                            .slice(0, 3)
-                            .map((detection, detIndex) => (
-                              <span
-                                key={`${attIndex}-${detIndex}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  showDocumentDetails(attachment, email.id);
-                                }}
-                                style={{
-                                  fontSize: "10px",
-                                  backgroundColor: getObjectColor(detection.class),
-                                  color: "white",
-                                  padding: "2px 6px",
-                                  borderRadius: "8px",
-                                  fontWeight: "500",
-                                  cursor: "pointer"
-                                }}
-                                title={`${detection.class}: ${(detection.confidence * 100).toFixed(1)}% 신뢰도 - 클릭하여 상세보기`}
-                              >
-                                {getObjectEmoji(detection.class)} {detection.class}
-                              </span>
-                            ))}
-                          {/* 이미지에 OCR 텍스트가 있으면 클릭 가능한 태그 */}
-                          {attachment.ocr_success && (
-                            <span
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                showDocumentDetails(attachment, email.id);
-                              }}
-                              style={{
-                                fontSize: "10px",
-                                backgroundColor: '#9c27b0',
-                                color: "white",
-                                padding: "2px 6px",
-                                borderRadius: "8px",
-                                fontWeight: "500",
-                                cursor: "pointer",
-                                border: '1px solid rgba(255, 255, 255, 0.3)'
-                              }}
-                              title="클릭하여 이미지 내 텍스트 보기"
-                            >
-                              📝 텍스트
-                            </span>
-                          )}
+                          {/* 기본 이미지 태그 - 항상 표시 */}
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              showDocumentDetails(attachment, email.id);
+                            }}
+                            style={{
+                              fontSize: "10px",
+                              backgroundColor: docInfo.color,
+                              color: "white",
+                              padding: "3px 8px",
+                              borderRadius: "10px",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              border: '1px solid rgba(255, 255, 255, 0.3)',
+                              transition: 'all 0.2s ease'
+                            }}
+                            title="클릭하여 이미지 상세보기"
+                            onMouseEnter={(e) => {
+                              e.target.style.transform = 'scale(1.05)';
+                              e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = 'scale(1)';
+                              e.target.style.boxShadow = 'none';
+                            }}
+                          >
+                            🖼️ Image
+                            {attachment.ocr_success && ' 📝'}
+                            {attachment.yolo_detections?.length > 0 && ' 🎯'}
+                          </span>
                         </React.Fragment>
                       );
                     }

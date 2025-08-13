@@ -29,9 +29,9 @@ const parseDate = (dateStr) => {
   return new Date();
 };
 
-const App = () => {
+const App = ({ email, appPassword, onLogout }) => {
   const [emails, setEmails] = useState([]);
-  const [selectedTag, setSelectedTag] = useState("전체 메일");
+  const [selectedTag, setSelectedTag] = useState("받은 메일");
   const [selectedEmail, setSelectedEmail] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isComposing, setIsComposing] = useState(false);
@@ -40,171 +40,22 @@ const App = () => {
   const [selectedIds, setSelectedIds] = useState([]); //체크박스
   const [isGeneratingAI, setIsGeneratingAI] = useState(false); // AI 답장 생성 상태
 
-  // 로그인 관련 상태
-  const [email, setEmail] = useState("");
-  const [appPassword, setAppPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const gmailRef = useRef(null); // ✅ 새로고침 버튼용 ref
 
-  // ✅ 백엔드 로그인 API 호출
-  const loginToBackend = async (userEmail, userPassword) => {
-    try {
-      console.log(`[🔑 백엔드 로그인] ${userEmail}`);
-      const response = await fetch("http://localhost:5001/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 세션 쿠키 포함
-        body: JSON.stringify({ email: userEmail,
-          app_password: userPassword}),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        console.log("[✅ 백엔드 로그인 성공]", data.session_id);
-        // 📌 저장된 이메일 불러오기 추가
-        const emailRes = await fetch("http://localhost:5001/api/emails/stored", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail,
-            app_password: userPassword,}),
-        });
-
-        const emailData = await emailRes.json();
-        if (emailData.emails) {
-          console.log("📬 저장된 메일:", emailData.emails.length);
-          setEmails(emailData.emails);  // 📌 이메일 상태에 저장
-        }
-
-        setEmail(userEmail);              // 📌 이메일 상태 저장
-        setAppPassword(userPassword);     // 📌 비밀번호 상태 저장
-        setIsLoggedIn(true);              // 📌 로그인 상태 true로
-        return true;
-      } else {
-        console.error("[❗백엔드 로그인 실패]", data.error);
-        return false;
-      }
-    } catch (error) {
-      console.error("[❗백엔드 로그인 오류]", error);
-      return false;
-    }
-  };
-
-  // ✅ 백엔드 로그아웃 API 호출
-  const logoutFromBackend = async (userEmail) => {
-    try {
-      console.log(`[🚪 백엔드 로그아웃] ${userEmail}`);
-      const response = await fetch("http://localhost:5001/api/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 세션 쿠키 포함
-        body: JSON.stringify({ email: userEmail }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        console.log("[✅ 백엔드 로그아웃 성공]");
-        return true;
-      } else {
-        console.error("[❗백엔드 로그아웃 실패]", data.error);
-        return false;
-      }
-    } catch (error) {
-      console.error("[❗백엔드 로그아웃 오류]", error);
-      return false;
-    }
-  };
-
-  // ✅ 로그인 처리 함수 (Login 컴포넌트에서 호출)
-  const handleLogin = async (userEmail, userPassword) => {
-    try {
-      // 1. 백엔드 세션 생성
-      const backendLoginSuccess = await loginToBackend(userEmail, userPassword);
-
-
-      if (backendLoginSuccess) {
-        // 2. 프론트엔드 상태 설정
-        setEmail(userEmail);
-        setAppPassword(userPassword);
-        localStorage.setItem("email", userEmail);
-        localStorage.setItem("appPassword", userPassword);
-
-        // 3. 로그인 상태로 전환
-        setIsLoggedIn(true);
-
-        console.log("[🎉 로그인 완료] 프론트엔드 + 백엔드 세션 생성됨");
-        return true;
-      } else {
-        alert("백엔드 로그인에 실패했습니다. 다시 시도해주세요.");
-        return false;
-      }
-    } catch (error) {
-      console.error("[❗로그인 처리 오류]", error);
-      alert("로그인 중 오류가 발생했습니다.");
-      return false;
-    }
-  };
-
-  // ✅ 로그아웃 처리 함수
-  const handleLogout = async () => {
-    try {
-      // 1. 백엔드 세션 삭제
-      await logoutFromBackend(email);
-
-      // 2. 프론트엔드 상태 초기화
-      setEmails([]);
-      setSelectedEmail(null);
-      setViewingEmail(null);
-      setLastFetchTime(null);
-      setSelectedIds([]);
-      setSelectedTag("전체 메일");
-      setSearchTerm("");
-      setIsComposing(false);
-
-      // 3. 로그인 정보 삭제
-      setEmail("");
-      setAppPassword("");
-      setIsLoggedIn(false);
-      localStorage.removeItem("email");
-      localStorage.removeItem("appPassword");
-
-      console.log("[🔄 로그아웃 완료] 모든 데이터 초기화됨");
-      alert("로그아웃되었습니다.");
-    } catch (error) {
-      console.error("[❗로그아웃 처리 오류]", error);
-    }
-  };
-
-  // ✅ 로그인 정보 복원 (페이지 새로고침 시)
+  // ✅ 로그인 후 자동 새로고침 (새 메일 가져오기) - 태그 변경과 통합
   useEffect(() => {
-    const savedEmail = localStorage.getItem("email");
-    const savedPassword = localStorage.getItem("appPassword");
-
-    if (savedEmail && savedPassword) {
-      console.log("[🔄 로그인 정보 복원]", savedEmail);
-
-      // 백엔드 세션도 복원
-      loginToBackend(savedEmail).then((success) => {
-        if (success) {
-          setEmail(savedEmail);
-          setAppPassword(savedPassword);
-          setIsLoggedIn(true);
-          console.log("[✅ 세션 복원 완료]");
-        } else {
-          // 백엔드 세션 복원 실패 시 로컬 정보 삭제
-          localStorage.removeItem("email");
-          localStorage.removeItem("appPassword");
-          console.log("[⚠️ 세션 복원 실패 - 로컬 정보 삭제]");
-        }
-      });
+    if (email && appPassword && (selectedTag === "받은 메일" || selectedTag === "보낸 메일")) {
+      console.log(`[🔄 메일 가져오기] ${selectedTag} - 로그인: ${!!email}, 태그: ${selectedTag}`);
+      
+      // 중복 방지를 위한 지연
+      const timer = setTimeout(() => {
+        gmailRef.current?.refetch();
+      }, 300); // 0.3초 후 실행
+      
+      // 클린업: 컴포넌트 언마운트나 의존성 변경 시 타이머 취소
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [email, appPassword, selectedTag]); // 모든 의존성을 하나로 통합
 
   // AI 답장 생성 함수
   const generateAIReply = async (originalEmail) => {
@@ -271,9 +122,10 @@ const App = () => {
     }
   };
 
-  // ✅ 태그 매핑 (할일 관리 추가)
+  // ✅ 태그 매핑 (받은메일/보낸메일 추가)
   const tagMap = {
-    "전체 메일": null, // all
+    "받은 메일": "inbox", 
+    "보낸 메일": "sent",
     "중요 메일": ["university.", "company."], // 대학교 + 회사기업
     스팸: "spam mail.",
     "보안 경고": "security alert.",
@@ -287,17 +139,27 @@ const App = () => {
     let matchesTag = true;
 
     if (requiredTag) {
-      if (selectedTag === "중요 메일") {
-        // 중요 메일: university. 또는 company. 분류
+      if (selectedTag === "받은 메일") {
+        // 받은메일만: classification이 "sent"가 아닌 것들
+        matchesTag = emailItem.classification !== "sent";
+      } else if (selectedTag === "보낸 메일") {
+        // 보낸메일만: classification이 "sent"인 것들
+        matchesTag = emailItem.classification === "sent";
+      } else if (selectedTag === "중요 메일") {
+        // 중요 메일: university. 또는 company. 분류 (받은메일만)
         matchesTag =
-          emailItem.classification?.toLowerCase() === "university." ||
-          emailItem.classification?.toLowerCase() === "company.";
+          emailItem.classification !== "sent" && 
+          (emailItem.classification?.toLowerCase() === "university." ||
+           emailItem.classification?.toLowerCase() === "company.");
       } else if (selectedTag === "스팸") {
-        // 스팸: spam mail. 분류
-        matchesTag = emailItem.classification?.toLowerCase() === "spam mail.";
+        // 스팸: spam mail. 분류 (받은메일만)
+        matchesTag = 
+          emailItem.classification !== "sent" &&
+          emailItem.classification?.toLowerCase() === "spam mail.";
       } else if (selectedTag === "보안 경고") {
-        // 보안 경고: security alert. 분류
+        // 보안 경고: security alert. 분류 (받은메일만)
         matchesTag =
+          emailItem.classification !== "sent" &&
           emailItem.classification?.toLowerCase() === "security alert.";
       }
     }
@@ -309,13 +171,7 @@ const App = () => {
     return matchesTag && matchesSearch;
   });
 
-  if (!isLoggedIn) {
-    return (
-      <Login
-        onLogin={handleLogin} // ✅ 로그인 처리 함수 전달
-      />
-    );
-  }
+  // 로그인 상태는 main.jsx에서 관리되므로 여기서는 제거
 
   return (
     <div className="app-container">
@@ -326,7 +182,7 @@ const App = () => {
           setIsComposing(true);
           setSelectedEmail(null);
         }}
-        onLogout={handleLogout} // ✅ 로그아웃 함수 전달
+        onLogout={onLogout} // ✅ 로그아웃 함수 전달
         userEmail={email} // ✅ 현재 사용자 이메일 전달
       />
 
@@ -440,15 +296,15 @@ const App = () => {
         <MailDetail email={selectedEmail} />
       )}
 
-      {/* ✅ GmailSummaryForm은 할일 관리와 챗봇이 아닐 때만 작동 */}
-      {selectedTag !== "할일 관리" && selectedTag !== "챗봇 AI" && (
-        <div className="right-panel">
-          <GmailSummaryForm
-            ref={gmailRef}
-            email={email}
-            appPassword={appPassword}
-            after={lastFetchTime}
-            setEmails={(newMails) => {
+      {/* ✅ GmailSummaryForm은 항상 렌더링 (태그 전환으로 인한 재마운트 방지) */}
+      <div className="right-panel" style={{ display: 'none' }}>
+        <GmailSummaryForm
+          ref={gmailRef}
+          email={email}
+          appPassword={appPassword}
+          after={lastFetchTime}
+          selectedTag={selectedTag}
+          setEmails={(newMails) => {
               setEmails((prev) => {
                 console.log("새로운 메일:", newMails.length, "개");
                 console.log("기존 메일:", prev.length, "개");
@@ -538,7 +394,6 @@ const App = () => {
             }}
           />
         </div>
-      )}
     </div>
   );
 };

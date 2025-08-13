@@ -47,7 +47,7 @@ const Chatbot = ({ email, appPassword }) => {
 
         let responseContent = `🔍 **검색 결과**\n\n`;
         responseContent += `📧 검색 대상: "${data.search_target}"\n`;
-        responseContent += `📊 검색된 메일: ${data.found_count}개 (총 ${data.total_searched}개 중)\n\n`;
+        responseContent += `📊 검색된 메일: ${data.found_count}개\n\n`;
 
         if (data.results && data.results.length > 0) {
           responseContent += `**발견된 메일들:**\n\n`;
@@ -130,21 +130,19 @@ const Chatbot = ({ email, appPassword }) => {
       if (response.ok) {
         console.log("[✅ 챗봇 응답]", data.action, data.confidence);
 
-        // ✅ 이메일 검색 의도인 경우 전용 검색 실행
+        // ✅ 이메일 검색 의도인 경우 챗봇 서비스 응답 직접 사용
         if (data.action === "email_search" || data.action === "person_search") {
-          console.log("[🔍 이메일 검색 모드 진입]");
+          console.log("[🔍 이메일 검색 완료] 챗봇 서비스에서 직접 처리됨");
 
-          // 검색 시작 메시지
-          const searchingMessage = {
+          // 챗봇 서비스에서 이미 검색하고 포맷된 응답 사용
+          const botMessage = {
             type: "bot",
-            content: `🔍 "${currentInput}"에 대한 이메일을 검색하고 있습니다...\n잠시만 기다려주세요.`,
+            content: data.response || "검색 결과를 가져올 수 없습니다.",
             timestamp: new Date(),
+            action: data.action,
+            confidence: data.confidence,
           };
-          setMessages((prev) => [...prev, searchingMessage]);
-
-          // 실제 검색 실행
-          const searchResult = await handleEmailSearch(currentInput);
-          setMessages((prev) => [...prev, searchResult]);
+          setMessages((prev) => [...prev, botMessage]);
         } else {
           // ✅ 기존 챗봇 응답
           const botMessage = {

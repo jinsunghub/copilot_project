@@ -17,13 +17,45 @@ const TodoDashboard = ({ email, appPassword }) => {
   const [newTodoDueDate, setNewTodoDueDate] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // 할일 추출
+  // ✅ DB에서 할일 목록만 조회 (빠른 로딩)
+  const loadTodos = async () => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      console.log('[📋 할일 목록 로딩]');
+      
+      const response = await fetch(`http://localhost:5001/api/todos?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setTodos(data.todos);
+        console.log(`[✅ 할일 목록 로딩 완료] ${data.total_count}개`);
+      } else {
+        throw new Error(data.error || '할일 목록 로딩 실패');
+      }
+    } catch (err) {
+      console.error('[❗할일 목록 로딩 오류]', err);
+      setError(`할일 목록 로딩 실패: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 할일 추출 (수동 버튼용 - 모든 이메일 재분석)
   const extractTodos = async () => {
     setLoading(true);
     setError('');
     
     try {
-      console.log('[📋 할일 추출 시작]');
+      console.log('[📋 할일 추출 시작] 모든 이메일 재분석');
       
       const response = await fetch('http://localhost:5001/api/extract-todos', {
         method: 'POST',
@@ -79,12 +111,12 @@ const TodoDashboard = ({ email, appPassword }) => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setTodos([...todos, data.todo]);
         setNewTodo('');
         setNewTodoEmail('');
         setNewTodoDueDate('');
         setShowAddForm(false);
+        // DB에서 최신 할일 목록 다시 로딩
+        loadTodos();
       }
     } catch (err) {
       console.error('[❗할일 추가 오류]', err);
@@ -162,9 +194,38 @@ const TodoDashboard = ({ email, appPassword }) => {
     }
   };
 
-  // 컴포넌트 마운트 시 할일 추출
+  // ✅ 중복 할일 정리
+  const cleanupDuplicates = async () => {
+    try {
+      const response = await fetch('http://localhost:5001/api/todos/cleanup-duplicates', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email: email
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert(`✅ ${data.removed_count}개의 중복 할일이 제거되었습니다!`);
+        // 할일 목록 새로고침 (DB에서 최신 데이터 로딩)
+        loadTodos();
+      } else {
+        throw new Error(data.error || '중복 정리 실패');
+      }
+    } catch (err) {
+      console.error('[❗중복 정리 오류]', err);
+      setError(`중복 정리 실패: ${err.message}`);
+    }
+  };
+
+  // 컴포넌트 마운트 시 할일 목록 로딩 (빠른 DB 조회)
   useEffect(() => {
-    extractTodos();
+    loadTodos();
   }, []);
 
   // 필터링된 할일들
@@ -297,6 +358,14 @@ const TodoDashboard = ({ email, appPassword }) => {
             style={{ marginRight: '10px', backgroundColor: '#4CAF50' }}
           >
             ➕ 할일 추가
+          </button>
+          <button 
+            className="extract-btn"
+            onClick={cleanupDuplicates}
+            style={{ marginRight: '10px', backgroundColor: '#ff6b6b' }}
+            title="중복된 할일들을 제거합니다"
+          >
+            🗑️ 중복 정리
           </button>
           <button 
             className="extract-btn"

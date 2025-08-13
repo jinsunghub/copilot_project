@@ -64,6 +64,19 @@ const MailDetail = ({ email }) => {
                 </div>
                 <div className="summary-content">{emailItem.summary}</div>
               </div>
+
+              {/* ✅ 첨부파일 요약 추가 */}
+              {emailItem.attachment_summary && (
+                <div className="attachment-summary-section">
+                  <div className="summary-header">
+                    <span className="ai-icon">📄</span>
+                    <span className="summary-title">첨부파일 요약</span>
+                  </div>
+                  <div className="summary-content attachment-summary">
+                    {emailItem.attachment_summary}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -103,6 +116,19 @@ const MailDetail = ({ email }) => {
           </div>
           <div className="summary-content">{singleEmail.summary}</div>
         </div>
+
+        {/* ✅ 첨부파일 요약 추가 (단일 메일) */}
+        {singleEmail.attachment_summary && (
+          <div className="attachment-summary-section single">
+            <div className="summary-header">
+              <span className="ai-icon">📄</span>
+              <span className="summary-title">첨부파일 요약</span>
+            </div>
+            <div className="summary-content attachment-summary">
+              {singleEmail.attachment_summary}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
