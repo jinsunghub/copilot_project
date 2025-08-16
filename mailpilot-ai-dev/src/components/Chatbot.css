@@ -1,7 +1,7 @@
 .chatbot-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
+  height: 100vh; /* calc(100vh - 120px)에서 100vh로 변경 */
   background: #f9f9f9;
   border-radius: 8px;
   overflow: hidden;
