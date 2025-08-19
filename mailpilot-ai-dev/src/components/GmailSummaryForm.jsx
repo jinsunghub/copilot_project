@@ -4,6 +4,45 @@ const GmailSummaryForm = forwardRef(
   ({ email, appPassword, after, setEmails, selectedTag }, ref) => {
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [gmailFetchCountCache, setGmailFetchCountCache] = useState(5); // 캐시된 설정값
+
+    // 설정 업데이트 감지
+    useEffect(() => {
+      const handleSettingsUpdate = () => {
+        console.log('[📧 GmailSummaryForm] 설정 업데이트 이벤트 수신, Gmail 설정 갱신');
+        fetchGmailSettings();
+      };
+      
+      window.addEventListener('settingsUpdated', handleSettingsUpdate);
+      
+      return () => {
+        window.removeEventListener('settingsUpdated', handleSettingsUpdate);
+      };
+    }, [email]);
+
+    // Gmail 설정 가져오기 (별도 함수로 분리)
+    const fetchGmailSettings = async () => {
+      if (!email) return;
+      
+      try {
+        const settingsRes = await fetch(`http://localhost:5001/api/settings/GENERAL/READ?email=${encodeURIComponent(email)}`, {
+          credentials: 'include'
+        });
+        const settingsData = await settingsRes.json();
+        if (settingsData.success && settingsData.settings) {
+          const newGmailFetchCount = settingsData.settings.gmailFetchCount || 5;
+          setGmailFetchCountCache(newGmailFetchCount);
+          console.log("[⚙️ Gmail 가져오기 개수 갱신]", newGmailFetchCount);
+        }
+      } catch (settingsErr) {
+        console.warn("[⚠️ Gmail 설정 조회 실패]", settingsErr);
+      }
+    };
+
+    // 초기 설정 로드
+    useEffect(() => {
+      fetchGmailSettings();
+    }, [email]);
 
     const fetchData = async () => {
       if (!email || !appPassword) {
@@ -21,30 +60,13 @@ const GmailSummaryForm = forwardRef(
           after ? "새로고침" : "첫 로딩"
         );
 
-        if (selectedTag === "보낸 메일") {
-          // 보낸메일만 가져오기 (기존 로직)
-          const res = await fetch("http://localhost:5001/api/emails/sent", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ email, count: 5, app_password: appPassword }),
-          });
+        // 캐시된 Gmail 가져오기 개수 사용
+        const gmailFetchCount = gmailFetchCountCache;
+        console.log("[⚙️ Gmail 가져오기 개수 (캐시됨)]", gmailFetchCount);
 
-          const data = await res.json();
-
-          if (res.ok && data.emails) {
-            console.log("[✅ 보낸메일 응답 성공]", data.emails.length, "개");
-            setEmails(data.emails);
-            setError("");
-          } else {
-            console.error("[❗보낸메일 응답 오류]", data.error);
-            setError(data.error || "❗보낸메일 요청 실패");
-          }
-        } else {
-          // 보낸메일 먼저, 그 다음 받은메일 순차 가져오기
-          console.log("[📧 보낸메일 먼저 요청]");
+        // 태그와 관계없이 항상 받은메일 + 보낸메일 가져오기
+        // 로그인/새로고침 시에만 호출되므로 항상 둘 다 가져옴
+        console.log("[📧 보낸메일 먼저 요청]");
           
           // 1. 보낸메일 먼저 가져오기
           const sentRes = await fetch("http://localhost:5001/api/emails/sent", {
@@ -53,7 +75,7 @@ const GmailSummaryForm = forwardRef(
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify({ email, count: 5, app_password: appPassword }),
+            body: JSON.stringify({ email, count: gmailFetchCount, app_password: appPassword }),
           });
           
           const sentData = await sentRes.json();
@@ -71,6 +93,7 @@ const GmailSummaryForm = forwardRef(
               email,
               app_password: appPassword,
               after: after || null,
+              count: gmailFetchCount,
             }),
           });
           
@@ -114,7 +137,6 @@ const GmailSummaryForm = forwardRef(
               setError(inboxData.error || "❗예상치 못한 응답");
             }
           }
-        }
       } catch (err) {
         console.error("[❗메일 요청 실패]", err);
         setError("❗요청 실패: " + err.message);

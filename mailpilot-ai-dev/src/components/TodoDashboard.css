@@ -517,3 +517,130 @@
 .todo-dashboard::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
+
+/* ==================== TodoDashboard 다크모드 스타일 ==================== */
+.dark-theme .todo-dashboard {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+.dark-theme .todo-header {
+  border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+}
+
+.dark-theme .header-left p {
+  color: #a0aec0;
+}
+
+.dark-theme .extract-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #f7fafc;
+}
+
+.dark-theme .stat-card {
+  background: rgba(45, 55, 72, 0.9);
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .stat-number {
+  color: #f7fafc;
+}
+
+.dark-theme .stat-label {
+  color: #a0aec0;
+}
+
+.dark-theme .empty-state {
+  color: #a0aec0;
+}
+
+.dark-theme .empty-state h3 {
+  color: #e2e8f0;
+}
+
+.dark-theme .todo-item {
+  background: rgba(45, 55, 72, 0.9);
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .todo-item:hover {
+  border-color: #667eea;
+}
+
+.dark-theme .todo-item.completed {
+  background: rgba(26, 32, 44, 0.9);
+}
+
+.dark-theme .todo-title {
+  color: #f7fafc;
+}
+
+.dark-theme .todo-description {
+  color: #a0aec0;
+}
+
+.dark-theme .todo-meta {
+  border-top: 1px solid #4a5568;
+}
+
+.dark-theme .todo-date, 
+.dark-theme .todo-source {
+  color: #a0aec0;
+}
+
+.dark-theme .todo-time {
+  color: #a78bfa;
+}
+
+.dark-theme .type-label {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  color: #e2e8f0;
+}
+
+.dark-theme .action-btn {
+  background: #374151;
+  color: #e2e8f0;
+}
+
+.dark-theme .action-btn:hover {
+  background: #4a5568;
+}
+
+.dark-theme .calendar-view {
+  background: rgba(45, 55, 72, 0.9);
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .calendar-title {
+  color: #f7fafc;
+}
+
+.dark-theme .calendar-placeholder {
+  color: #a0aec0;
+}
+
+.dark-theme .todo-controls {
+  background: rgba(45, 55, 72, 0.8);
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .filter-select {
+  background: #374151;
+  border: 2px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .filter-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.dark-theme .view-btn {
+  background: #374151;
+  border: 2px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .view-btn:hover:not(.active) {
+  background: #4a5568;
+  border-color: #6b7280;
+}

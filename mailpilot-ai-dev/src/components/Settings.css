@@ -1,0 +1,876 @@
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.settings-container {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* 서명 관리 스타일 */
+.setting-description {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0 0 0;
+}
+
+.signature-list {
+  margin-top: 20px;
+}
+
+.signature-section {
+  margin-top: 20px;
+}
+
+.signature-section h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.signature-display {
+  margin-top: 15px;
+}
+
+.current-signature {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.btn-edit-signature {
+  padding: 8px 16px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.btn-edit-signature:hover:not(:disabled) {
+  background: #1976D2;
+}
+
+.btn-edit-signature:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.list-header h4 {
+  margin: 0;
+  color: #333;
+}
+
+.btn-add {
+  padding: 8px 16px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-add:hover:not(:disabled) {
+  background: #1976D2;
+}
+
+.btn-add:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 2px dashed #ddd;
+}
+
+.empty-state p {
+  margin: 5px 0;
+}
+
+.signatures {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signature-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.signature-info {
+  flex: 1;
+}
+
+.signature-info h5 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.signature-preview {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 12px;
+  margin: 8px 0;
+  max-height: 100px;
+  overflow: auto;
+}
+
+.signature-preview pre {
+  margin: 0;
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.signature-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 12px;
+  color: #888;
+}
+
+.signature-type {
+  font-weight: 500;
+}
+
+.signature-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.btn-edit, .btn-delete {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-edit:hover:not(:disabled) {
+  background: #e3f2fd;
+  border-color: #2196F3;
+}
+
+.btn-delete:hover:not(:disabled) {
+  background: #ffebee;
+  border-color: #f44336;
+}
+
+.btn-edit:disabled, .btn-delete:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.signature-form {
+  margin-top: 30px;
+  padding: 20px;
+  border: 2px solid #e3f2fd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.signature-form h4 {
+  margin: 0 0 20px 0;
+  color: #1976D2;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.html-textarea {
+  font-family: 'Courier New', monospace;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: #2196F3;
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
+
+.html-preview {
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: white;
+}
+
+.html-preview h5 {
+  margin: 0 0 8px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.preview-content {
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.form-actions .btn-save {
+  padding: 10px 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.form-actions .btn-save:hover {
+  background: #45a049;
+}
+
+.form-actions .btn-cancel {
+  padding: 10px 20px;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.form-actions .btn-cancel:hover {
+  background: #da190b;
+}
+
+/* 서명 안내 메시지 */
+.signature-notice {
+  padding: 20px;
+  background: #f0f8ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.signature-notice p {
+  margin: 8px 0;
+  color: #333;
+}
+
+.signature-notice strong {
+  color: #2196F3;
+}
+
+.settings-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.settings-sidebar {
+  width: 200px;
+  background: #f5f5f5;
+  border-right: 1px solid #e0e0e0;
+}
+
+.settings-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-sidebar li {
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #666;
+  font-weight: 500;
+}
+
+.settings-sidebar li:hover {
+  background: #ebebeb;
+}
+
+.settings-sidebar li.active {
+  background: #fff;
+  color: #4285f4;
+  border-left: 3px solid #4285f4;
+}
+
+.settings-main {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.settings-section {
+  margin-bottom: 32px;
+}
+
+.settings-section h3 {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.setting-item {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.setting-item label {
+  min-width: 150px;
+  color: #555;
+  font-size: 14px;
+}
+
+.setting-item input[type="text"],
+.setting-item input[type="number"],
+.setting-item select {
+  flex: 1;
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.setting-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+.setting-item label input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.settings-footer > div {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancel,
+.btn-save,
+.btn-reset {
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset {
+  background: #ff9800;
+  border: none;
+  color: white;
+}
+
+.btn-reset:hover {
+  background: #f57c00;
+}
+
+.btn-cancel {
+  background: white;
+  border: 1px solid #ddd;
+  color: #666;
+}
+
+.btn-cancel:hover {
+  background: #f5f5f5;
+}
+
+.btn-save {
+  background: #4285f4;
+  border: none;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #357ae8;
+}
+
+/* 상세 설정 스타일 */
+.detailed-settings .settings-container {
+  max-width: 1000px;
+  width: 95%;
+}
+
+.detailed-settings .settings-sidebar {
+  width: 250px;
+}
+
+.category-title {
+  font-weight: 600;
+  padding: 12px 0;
+}
+
+.subcategory-list {
+  padding-left: 16px;
+  border-left: 2px solid #e0e0e0;
+  margin-left: 8px;
+}
+
+.subcategory-list li {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.subcategory-list li.active {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-left: 2px solid #1976d2;
+}
+
+.settings-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.settings-content-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.saving-indicator {
+  font-size: 12px;
+  color: #4285f4;
+  font-weight: 500;
+}
+
+.settings-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.settings-section {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+}
+
+.settings-section h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #444;
+  font-weight: 600;
+}
+
+.section-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.radio-option, .checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.radio-option input, .checkbox-option input {
+  margin: 0;
+}
+
+.setting-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.detailed-settings .setting-item {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.detailed-settings .setting-item label {
+  min-width: auto;
+  font-weight: 500;
+}
+
+.detailed-settings .setting-item input[type="text"],
+.detailed-settings .setting-item input[type="number"],
+.detailed-settings .setting-item select {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* 다크 테마 지원 */
+@media (prefers-color-scheme: dark) {
+  .settings-container {
+    background: #1a1a1a;
+    color: #fff;
+  }
+
+  .settings-header {
+    border-bottom-color: #333;
+  }
+
+  .settings-header h2 {
+    color: #fff;
+  }
+
+  .close-btn {
+    color: #aaa;
+  }
+
+  .close-btn:hover {
+    color: #fff;
+  }
+
+  .settings-sidebar {
+    background: #0f0f0f;
+    border-right-color: #333;
+  }
+
+  .settings-sidebar li {
+    color: #aaa;
+  }
+
+  .settings-sidebar li:hover {
+    background: #222;
+  }
+
+  .settings-sidebar li.active {
+    background: #1a1a1a;
+    color: #4285f4;
+  }
+
+  .settings-section h3 {
+    color: #fff;
+    border-bottom-color: #333;
+  }
+
+  .setting-item label {
+    color: #ccc;
+  }
+
+  .setting-item input[type="text"],
+  .setting-item input[type="number"],
+  .setting-item select {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #fff;
+  }
+
+  .settings-footer {
+    border-top-color: #333;
+  }
+
+  .btn-cancel {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #ccc;
+  }
+
+  .btn-cancel:hover {
+    background: #333;
+  }
+}
+
+/* 새로운 UX 개선 스타일 */
+.settings-footer {
+  padding: 20px 24px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-left {
+  flex: 1;
+}
+
+.footer-right {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.changes-indicator {
+  font-size: 14px;
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.btn-save {
+  background: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: #45a049;
+  border-color: #45a049;
+}
+
+.btn-save:disabled {
+  background: #ccc;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-cancel:disabled {
+  background: #f9f9f9;
+  color: #ccc;
+  border-color: #eee;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-close {
+  background: #f5f5f5;
+  color: #666;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-close:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
+}
+
+/* 변경된 필드 스타일 */
+.setting-item.changed {
+  background-color: #fff3e0;
+  border-left: 3px solid #ff9800;
+  padding-left: 15px;
+  margin-left: -15px;
+  border-radius: 4px;
+}
+
+.change-indicator {
+  color: #ff9800;
+  font-weight: bold;
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+/* 필터 리스트 컴포넌트 스타일 */
+.filter-list-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.filter-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.filter-item input[type="text"] {
+  flex: 2;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.filter-item select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.remove-filter-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.remove-filter-btn:hover:not(:disabled) {
+  background: #d32f2f;
+}
+
+.add-filter-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.add-filter-btn:hover:not(:disabled) {
+  background: #45a049;
+}
+
+/* 텍스트에어리어 스타일 개선 */
+.detailed-settings .setting-item textarea {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+/* 날짜 입력 스타일 개선 */
+.detailed-settings .setting-item input[type="date"] {
+  width: 100%;
+  max-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}

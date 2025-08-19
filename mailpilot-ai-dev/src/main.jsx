@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import Login from "./components/Login";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import "./App.css";
+import "./styles/theme.css";
 
 const Root = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -82,6 +84,10 @@ const Root = () => {
       setAppPassword("");
       localStorage.removeItem("email");
       localStorage.removeItem("appPassword");
+      
+      // 다크 테마 클래스 제거 (로그인 화면이 깨지지 않도록)
+      document.documentElement.classList.remove('dark-theme');
+      
       console.log("[🔄 Main 로그아웃 완료] 모든 데이터 초기화됨");
     }
   };
@@ -94,5 +100,7 @@ const Root = () => {
 };
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Root />
+  <LanguageProvider>
+    <Root />
+  </LanguageProvider>
 );

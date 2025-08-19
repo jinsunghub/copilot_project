@@ -76,3 +76,8 @@
   box-sizing: border-box;
   position: relative; /* ✅ 추가 */
 }
+
+/* 사이드바 다크모드 스타일 추가 */
+.dark-theme .logo-text {
+  color: #f7fafc !important;
+}

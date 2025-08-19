@@ -6,7 +6,7 @@ const Chatbot = ({ email, appPassword }) => {
     {
       type: "bot",
       content:
-        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n✨ 새로운 기능: 이메일 검색이 추가되었습니다!\n예시: 'find abc@gmail.com'",
+        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n🔧 **사용 가능한 기능:**\n• 문법/맞춤법 교정\n• 메일 검색 (사람별/키워드별)\n• AI 답장 생성",
       timestamp: new Date(),
     },
   ]);
@@ -205,11 +205,22 @@ const Chatbot = ({ email, appPassword }) => {
     document.querySelector(".chat-input")?.focus();
   };
 
+  // 안내 메시지를 챗봇 응답으로 추가하는 함수
+  const addGuidanceMessage = (content) => {
+    const guidanceMessage = {
+      type: "bot",
+      content: content,
+      timestamp: new Date(),
+      isGuidance: true
+    };
+    setMessages((prev) => [...prev, guidanceMessage]);
+  };
+
   return (
     <div className="chatbot-container">
       <div className="chatbot-header">
         <h2>🤖 AI 어시스턴트</h2>
-        <p>문법 교정, 이미지 생성, 메일 검색 등을 도와드립니다</p>
+        <p>문법 교정, 메일 검색, AI 답장 생성을 도와드립니다</p>
         <div style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
           👤 {email}
         </div>
@@ -220,7 +231,11 @@ const Chatbot = ({ email, appPassword }) => {
           <div
             key={index}
             className={`message ${
-              message.type === "user" ? "user-message" : "bot-message"
+              message.type === "user" 
+                ? "user-message" 
+                : message.isGuidance 
+                  ? "bot-message guidance"
+                  : "bot-message"
             }`}
           >
             <div className="message-content">
@@ -268,27 +283,33 @@ const Chatbot = ({ email, appPassword }) => {
         <div className="input-suggestions">
           <button
             className="suggestion-btn"
-            onClick={() => handleQuickInput("맞춤법을 교정해주세요")}
+            onClick={() => addGuidanceMessage("📝 **문법/맞춤법 교정**\n\n교정하고 싶은 텍스트를 입력해주세요.\n\n💡 **예시:**\n• '안녕하세요. 제가 오늘 회의에 참석못할것 같습니다' 교정해주세요\n• 'I can't attend meeting today' 교정해주세요\n\n➡️ 아래 입력창에 교정할 텍스트를 입력하세요!")}
           >
             맞춤법 교정
           </button>
           <button
             className="suggestion-btn"
-            onClick={() => handleQuickInput("이미지를 생성해주세요")}
+            onClick={() => addGuidanceMessage("🔍 **고급 키워드 검색**\n\n검색하고 싶은 키워드와 조건을 입력해주세요.\n\n💡 **기본 검색:**\n• '회의 관련 메일 찾아줘'\n• '프로젝트 업데이트 검색'\n\n🗓️ **날짜별 검색:**\n• '어제 받은 메일 보여줘'\n• '지난주 회의 메일 찾아줘'\n• '최근 3일 메일'\n\n🔢 **개수 제한:**\n• '최신 메일 5개만'\n• '회의 관련 메일 3개'\n\n📧 **타입별 검색:**\n• '받은메일만 검색'\n• '보낸메일 중 프로젝트 관련'\n\n➡️ 아래 입력창에 검색 조건을 입력하세요!")}
           >
-            이미지 생성
+            키워드 검색
           </button>
           <button
             className="suggestion-btn"
-            onClick={() => handleQuickInput("김철수님의 메일을 찾아주세요")}
+            onClick={() => addGuidanceMessage("👤 **고급 사람별 검색**\n\n검색하고 싶은 사람과 조건을 입력해주세요.\n\n💡 **기본 사람별 검색:**\n• '김철수님 메일 보여줘'\n• '교수님 이메일 찾아줘'\n\n🗓️ **날짜 조건 추가:**\n• '김철수님 어제 메일'\n• '교수님 지난주 이메일'\n• '박영희씨 최근 3일 메일'\n\n📧 **타입별 검색:**\n• '김철수님 받은메일만'\n• '교수님 보낸메일 찾아줘'\n\n🔢 **개수 제한:**\n• '김철수님 메일 5개만'\n• '교수님 최신 메일 3개'\n\n➡️ 아래 입력창에 사람과 조건을 입력하세요!")}
           >
             이름으로 검색
           </button>
           <button
             className="suggestion-btn"
-            onClick={() => handleQuickInput("abc@gmail.com에서 온 메일")}
+            onClick={() => addGuidanceMessage("📧 **이메일 주소 검색**\n\n검색하고 싶은 이메일 주소를 입력해주세요.\n\n💡 **예시:**\n• 'abc@gmail.com 메일 보여줘'\n• 'john@company.com 이메일 찾아줘'\n• 'swchoi915@naver.com에서 온 메일'\n\n➡️ 아래 입력창에 이메일 주소를 입력하세요!")}
           >
             이메일로 검색
+          </button>
+          <button
+            className="suggestion-btn"
+            onClick={() => addGuidanceMessage("📊 **이메일 통계**\n\n궁금한 통계 정보를 입력해주세요.\n\n💡 **예시:**\n• '오늘 메일 몇 개?'\n• '이번주 메일 개수'\n• '총 메일 통계'\n• '어제 받은 메일 개수'\n• '이번달 메일 몇 개?'\n\n➡️ 아래 입력창에 궁금한 통계를 입력하세요!")}
+          >
+            메일 통계
           </button>
         </div>
 

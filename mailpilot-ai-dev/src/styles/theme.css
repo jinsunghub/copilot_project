@@ -1,0 +1,308 @@
+/* 다크 테마 스타일 */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-hover: #ebebeb;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --border-color: #e0e0e0;
+  --sidebar-bg: #f8f9fa;
+  --mail-item-bg: #ffffff;
+  --mail-item-hover: #f5f5f5;
+  --button-bg: #ffffff;
+  --button-hover: #f5f5f5;
+  --input-bg: #ffffff;
+  --modal-bg: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --bg-hover: #3a3a3a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaaaaa;
+  --border-color: #444444;
+  --sidebar-bg: #1f1f1f;
+  --mail-item-bg: #2a2a2a;
+  --mail-item-hover: #3a3a3a;
+  --button-bg: #2a2a2a;
+  --button-hover: #3a3a3a;
+  --input-bg: #2a2a2a;
+  --modal-bg: #2a2a2a;
+  --shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* 기본 요소들에 CSS 변수 적용 */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 앱 컨테이너 */
+.app-container {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* 사이드바 */
+.sidebar {
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+}
+
+.sidebar h2 {
+  color: var(--text-primary);
+}
+
+.sidebar li {
+  color: var(--text-secondary);
+}
+
+.sidebar li:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.sidebar li.active {
+  background-color: var(--bg-secondary);
+  color: #4285f4;
+}
+
+/* 메인 패널 */
+.main-panel {
+  background-color: var(--bg-primary);
+}
+
+/* 검색바 */
+.search-bar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.search-bar input {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.search-bar input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* 메일 리스트 */
+.mail-list {
+  background-color: var(--bg-primary);
+}
+
+.mail-item {
+  background-color: var(--mail-item-bg);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.mail-item:hover {
+  background-color: var(--mail-item-hover);
+}
+
+.mail-item .sender {
+  color: var(--text-primary);
+}
+
+.mail-item .subject {
+  color: var(--text-primary);
+}
+
+.mail-item .date {
+  color: var(--text-secondary);
+}
+
+.mail-item .summary {
+  color: var(--text-secondary);
+}
+
+/* 메일 상세 */
+.mail-detail {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.mail-detail h2 {
+  color: var(--text-primary);
+}
+
+.mail-detail .mail-header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mail-detail .mail-body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* 버튼 */
+button, .btn {
+  background-color: var(--button-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+button:hover, .btn:hover {
+  background-color: var(--button-hover);
+}
+
+.btn-primary {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #357ae8;
+}
+
+.setting-button {
+  background-color: var(--button-bg);
+  color: white !important;
+  border: 1px solid var(--border-color);
+}
+
+.setting-button:hover {
+  background-color: var(--button-hover);
+}
+
+/* 모달 */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: var(--modal-bg);
+  color: var(--text-primary);
+  box-shadow: 0 10px 40px var(--shadow);
+}
+
+/* 입력 필드 */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+/* 챗봇 */
+.chatbot-container {
+  background-color: var(--bg-primary);
+}
+
+.chat-messages {
+  background-color: var(--bg-secondary);
+}
+
+.message {
+  background-color: var(--mail-item-bg);
+  color: var(--text-primary);
+}
+
+.message.user {
+  background-color: #4285f4;
+  color: white;
+}
+
+.message.bot {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Todo Dashboard */
+.todo-dashboard {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.todo-item {
+  background-color: var(--mail-item-bg);
+  border: 1px solid var(--border-color);
+}
+
+.todo-item:hover {
+  background-color: var(--mail-item-hover);
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-primary);
+}
+
+/* 테이블 */
+table {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+td {
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+tr:hover {
+  background-color: var(--bg-hover);
+}
+
+/* 링크 */
+a {
+  color: #4285f4;
+}
+
+a:hover {
+  color: #357ae8;
+}
+
+/* 카드 컴포넌트 */
+.card {
+  background-color: var(--mail-item-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 4px var(--shadow);
+}
+
+.card-header {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.card-body {
+  background-color: var(--mail-item-bg);
+  color: var(--text-primary);
+}

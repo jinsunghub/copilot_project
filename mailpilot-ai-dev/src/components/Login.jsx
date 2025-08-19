@@ -66,7 +66,7 @@ const Login = ({ onLogin, setEmail, setAppPassword, setIsLoggedIn }) => {
 
   return (
     <div className="login-container">
-      <h1 className="logo">📬 MailPilot AI</h1>
+      <h1 className="logo">📬 E.M.Pilot</h1>
 
       <form className="login-form" onSubmit={handleSubmit}>
         <input

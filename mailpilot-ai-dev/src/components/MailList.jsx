@@ -1,14 +1,177 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
+const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds, onEmailDeleted, onRefresh }) => {
   const [documentModalVisible, setDocumentModalVisible] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  
+  // 설정 관련 상태
+  const [autoSelectFirstMail, setAutoSelectFirstMail] = useState(false);
+  const [popupInListView, setPopupInListView] = useState(false);
+  const [emailsPerPage, setEmailsPerPage] = useState(50);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [autoRefresh, setAutoRefresh] = useState(false);
+  const [refreshInterval, setRefreshInterval] = useState(60);
+  
+  // 설정 불러오기
+  useEffect(() => {
+    fetchListSettings();
+    
+    // 설정 업데이트 이벤트 리스너
+    const handleSettingsUpdate = () => {
+      console.log('[📧 MailList] 설정 업데이트 이벤트 수신, 설정 다시 로드');
+      fetchListSettings();
+    };
+    
+    window.addEventListener('settingsUpdated', handleSettingsUpdate);
+    
+    return () => {
+      window.removeEventListener('settingsUpdated', handleSettingsUpdate);
+    };
+  }, []);
+  
+  // 첫 메일 자동선택
+  useEffect(() => {
+    if (autoSelectFirstMail && emails.length > 0 && onSelectEmail) {
+      console.log('[📧 MailList] 첫 메일 자동선택 실행');
+      onSelectEmail(emails[0]);
+    }
+  }, [emails, autoSelectFirstMail]);
+  
+  // 자동 새로고침
+  useEffect(() => {
+    if (autoRefresh && refreshInterval > 0 && onRefresh) {
+      console.log(`[🔄 MailList] 자동 새로고침 시작 - ${refreshInterval}초 간격`);
+      
+      const intervalId = setInterval(() => {
+        console.log('[🔄 MailList] 자동 새로고침 실행');
+        onRefresh();
+      }, refreshInterval * 1000);
+      
+      return () => {
+        console.log('[🔄 MailList] 자동 새로고침 중지');
+        clearInterval(intervalId);
+      };
+    }
+  }, [autoRefresh, refreshInterval, onRefresh]);
+  
+  const fetchListSettings = async () => {
+    try {
+      const userEmail = localStorage.getItem('email');
+      if (!userEmail) return;
+      
+      const response = await fetch(`http://localhost:5001/api/settings/GENERAL/READ?email=${encodeURIComponent(userEmail)}`, {
+        credentials: 'include'
+      });
+      const data = await response.json();
+      
+      if (data.success && data.settings) {
+        console.log('[📧 MailList] 설정 로드:', data.settings);
+        
+        // 새로운 설정 구조에서 페이지당 표시할 메일 수 가져오기
+        if (data.settings.itemsPerPage) {
+          setEmailsPerPage(data.settings.itemsPerPage);
+        }
+      }
+    } catch (error) {
+      console.error('[MailList] 설정 불러오기 실패:', error);
+    }
+  };
 
   const toggleCheckbox = (id) => {
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter((item) => item !== id));
     } else {
       setSelectedIds([...selectedIds, id]);
+    }
+  };
+  
+  // 메일 클릭 처리 (팝업 읽기 지원)
+  const handleEmailClick = (email) => {
+    if (popupInListView) {
+      // 팝업으로 메일 열기
+      const popupWindow = window.open('', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      
+      if (popupWindow) {
+        popupWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>${email.subject}</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                padding: 20px;
+                margin: 0;
+                background: #f5f5f5;
+              }
+              .email-container {
+                background: white;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+              }
+              .email-header {
+                border-bottom: 1px solid #e0e0e0;
+                padding-bottom: 15px;
+                margin-bottom: 20px;
+              }
+              .email-subject {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333;
+              }
+              .email-meta {
+                color: #666;
+                font-size: 14px;
+                margin: 5px 0;
+              }
+              .email-body {
+                line-height: 1.6;
+                color: #333;
+                white-space: pre-wrap;
+              }
+              .attachments {
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px solid #e0e0e0;
+              }
+              .attachment-item {
+                display: inline-block;
+                padding: 5px 10px;
+                margin: 5px;
+                background: #f0f0f0;
+                border-radius: 5px;
+                font-size: 13px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="email-container">
+              <div class="email-header">
+                <div class="email-subject">${email.subject}</div>
+                <div class="email-meta"><strong>보낸 사람:</strong> ${email.from}</div>
+                <div class="email-meta"><strong>날짜:</strong> ${email.date}</div>
+                ${email.to ? `<div class="email-meta"><strong>받는 사람:</strong> ${email.to}</div>` : ''}
+              </div>
+              <div class="email-body">${email.body || '내용 없음'}</div>
+              ${email.attachments && email.attachments.length > 0 ? `
+                <div class="attachments">
+                  <strong>첨부파일:</strong>
+                  ${email.attachments.map(att => 
+                    `<span class="attachment-item">📎 ${att.filename || '파일'}</span>`
+                  ).join('')}
+                </div>
+              ` : ''}
+            </div>
+          </body>
+          </html>
+        `);
+        popupWindow.document.close();
+      }
+    } else {
+      // 기존 방식으로 메일 선택
+      onSelectEmail(email);
     }
   };
 
@@ -215,10 +378,16 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
     );
   };
 
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(emails.length / emailsPerPage);
+  const startIndex = (currentPage - 1) * emailsPerPage;
+  const endIndex = startIndex + emailsPerPage;
+  const currentEmails = emails.slice(startIndex, endIndex);
+  
   return (
     <>
       <div className="mail-list">
-        {emails.map((email, index) => (
+        {currentEmails.map((email, index) => (
           <div
             key={`${email.subject}-${email.from}-${email.date}-${index}`}
             className="mail-item"
@@ -232,7 +401,7 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
             />
             <div
               className="mail-info"
-              onClick={() => onSelectEmail(email)}
+              onClick={() => handleEmailClick(email)}
               style={{ cursor: "pointer", flex: 1 }}
             >
               <div className="mail-subject">
@@ -380,6 +549,32 @@ const MailList = ({ emails, onSelectEmail, selectedIds, setSelectedIds }) => {
           </div>
         ))}
       </div>
+      
+      {/* 페이지네이션 컨트롤 */}
+      {emails.length > 0 && (
+        <div className="pagination-container">
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="pagination-btn prev-btn"
+          >
+            이전
+          </button>
+          
+          <span className="pagination-info">
+            {currentPage} / {totalPages} 페이지 (전체 {emails.length}개)
+          </span>
+          
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            className="pagination-btn next-btn"
+          >
+            다음
+          </button>
+          
+        </div>
+      )}
 
       {/* ✅ 문서 상세 모달 */}
       <DocumentModal />

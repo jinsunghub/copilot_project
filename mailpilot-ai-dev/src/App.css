@@ -84,7 +84,7 @@ body {
 
 /* 메인 패널 */
 .main-panel {
-  flex: 1.5; /* 1에서 0.8로 줄임 */
+  flex: 1.5; /* 원래대로 복구 */
   display: flex;
   flex-direction: column;
   background: #ffffff;
@@ -1086,4 +1086,208 @@ input[type="checkbox"] {
   100% {
     background-position: -200% 0;
   }
+}
+
+/* ==================== 다크모드 스타일 (기존 CSS는 건드리지 않음) ==================== */
+.dark-theme body {
+  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  color: #f7fafc;
+}
+
+.dark-theme .app-container {
+  background: #1a202c;
+}
+
+.dark-theme .sidebar {
+  background: linear-gradient(180deg, #2d3748 0%, #1a202c 100%);
+  border-right: 1px solid #4a5568;
+}
+
+.dark-theme .sidebar li {
+  color: #f7fafc !important; /* 사이드바 메뉴 글씨를 더 밝은 흰색으로 */
+}
+
+.dark-theme .sidebar li:hover:not(.active) {
+  background: linear-gradient(135deg, #374151 0%, #4a5568 100%);
+}
+
+.dark-theme .sidebar li.active {
+  color: #f7fafc !important; /* 활성 메뉴 글씨를 밝게 (그라데이션 배경이라 잘 보임) */
+}
+
+.dark-theme .main-panel {
+  background: #2d3748;
+}
+
+.dark-theme .search-bar {
+  background: linear-gradient(135deg, #2d3748 0%, #374151 100%);
+  border-bottom: 1px solid #4a5568;
+}
+
+.dark-theme .search-bar input {
+  background: rgba(26, 32, 44, 0.9);
+  border: 2px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .search-bar input:focus {
+  border-color: #667eea;
+  background: rgba(26, 32, 44, 1);
+}
+
+.dark-theme .search-bar input::placeholder {
+  color: #a0aec0;
+}
+
+.dark-theme .mail-list {
+  background: linear-gradient(135deg, #374151 0%, #2d3748 100%);
+}
+
+.dark-theme .mail-item {
+  background: rgba(45, 55, 72, 0.9);
+  border: 1px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .mail-item:hover {
+  background: rgba(45, 55, 72, 1);
+  border-color: #667eea;
+}
+
+.dark-theme .mail-item.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #f7fafc !important; /* 활성 메일 아이템 글씨를 밝게 */
+}
+
+.dark-theme .mail-item.active .mail-subject {
+  color: #f7fafc !important; /* 활성 상태 제목 글씨 밝게 */
+}
+
+.dark-theme .mail-item.active .mail-from {
+  color: #e2e8f0 !important; /* 활성 상태 발신자 글씨 밝게 */
+}
+
+.dark-theme .mail-item.active .mail-date {
+  color: #cbd5e0 !important; /* 활성 상태 날짜 글씨 밝게 */
+}
+
+.dark-theme .mail-subject {
+  color: #f7fafc;
+}
+
+.dark-theme .mail-from {
+  color: #a78bfa;
+}
+
+.dark-theme .mail-date {
+  color: #a0aec0;
+}
+
+.dark-theme .classification-label {
+  background: linear-gradient(135deg, #553c9a, #7c3aed);
+  color: #e9d5ff;
+}
+
+.dark-theme .mail-detail {
+  background: linear-gradient(135deg, #2d3748 0%, #374151 100%);
+}
+
+.dark-theme .setting-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #f7fafc !important; /* 버튼 텍스트를 밝게 */
+}
+
+.dark-theme .setting-button:disabled {
+  background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+  color: #a0aec0 !important; /* 비활성 버튼 텍스트는 회색 */
+}
+
+.dark-theme .back-button {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  color: #f7fafc !important; /* 뒤로가기 버튼 텍스트 밝게 */
+}
+
+/* 페이지네이션 기본 스타일 */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.pagination-btn {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  color: #333;
+}
+
+.pagination-btn:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+  color: #999;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 페이지네이션 다크모드 스타일 */
+.dark-theme .pagination-container {
+  border-top: 1px solid #4a5568;
+}
+
+.dark-theme .pagination-btn {
+  background: #2d3748; /* 이전/다음 버튼을 검정색으로 */
+  color: #f7fafc;
+  border: 1px solid #4a5568;
+}
+
+.dark-theme .pagination-btn:hover:not(:disabled) {
+  background: #374151;
+  border-color: #667eea;
+}
+
+.dark-theme .pagination-btn:disabled {
+  background: #1a202c;
+  color: #4a5568;
+  cursor: not-allowed;
+}
+
+.dark-theme .pagination-info {
+  color: #f7fafc; /* 페이지 정보를 흰색으로 */
+}
+
+.dark-theme .mail-content {
+  background: linear-gradient(135deg, #2d3748 0%, #374151 100%);
+  color: #f7fafc;
+}
+
+.dark-theme .mail-content h2 {
+  color: #f7fafc;
+}
+
+.dark-theme .mail-body {
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid #4a5568;
+  color: #e2e8f0;
+}
+
+.dark-theme .mail-input,
+.dark-theme .mail-textarea {
+  background: rgba(26, 32, 44, 0.9);
+  border: 2px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .mail-input:focus,
+.dark-theme .mail-textarea:focus {
+  border-color: #667eea;
+  background: rgba(26, 32, 44, 1);
 }

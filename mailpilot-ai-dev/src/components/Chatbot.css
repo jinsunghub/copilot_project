@@ -1,7 +1,7 @@
 .chatbot-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 120px);
+  height: 100vh;
   background: #f9f9f9;
   border-radius: 8px;
   overflow: hidden;
@@ -78,6 +78,19 @@
   border-bottom-left-radius: 4px;
 }
 
+/* 안내 메시지 스타일 */
+.bot-message.guidance .message-text {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+  border-bottom-left-radius: 4px;
+}
+
+.bot-message.guidance .message-time {
+  color: #856404;
+  opacity: 0.7;
+}
+
 .message-time {
   font-size: 0.75em;
   color: #666;
@@ -141,11 +154,14 @@
   background: #e9ecef;
   border: 1px solid #ced4da;
   border-radius: 16px;
-  padding: 6px 12px;
-  font-size: 0.85em;
+  padding: 6px 10px;
+  font-size: 0.8em;
   color: #495057;
   cursor: pointer;
   transition: all 0.2s;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
 }
 
 .suggestion-btn:hover {
@@ -204,4 +220,110 @@
 .send-button:disabled {
   background: #6c757d;
   cursor: not-allowed;
+}
+
+/* ==================== Chatbot 다크모드 스타일 ==================== */
+.dark-theme .chatbot-container {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
+}
+
+.dark-theme .chatbot-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #f7fafc;
+}
+
+.dark-theme .chatbot-messages {
+  background: #2d3748 !important;
+}
+
+.dark-theme .bot-message .message-text {
+  background: #4a5568 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .message.bot-message.guidance .message-text {
+  background: #4a5568 !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #6b7280 !important;
+}
+
+.dark-theme .bot-message.guidance .message-time {
+  color: #fbbf24;
+}
+
+.dark-theme .message-time {
+  color: #e2e8f0;
+}
+
+.dark-theme .typing-indicator {
+  background: #4a5568;
+}
+
+.dark-theme .typing-indicator span {
+  background: #a0aec0;
+}
+
+.dark-theme .chatbot-input-container {
+  background: #374151;
+  border-top: 1px solid #4a5568;
+}
+
+.dark-theme .suggestion-btn {
+  background: #4a5568;
+  border: 1px solid #6b7280;
+  color: #e2e8f0;
+}
+
+.dark-theme .suggestion-btn:hover {
+  background: #007bff;
+  color: #f7fafc;
+  border-color: #007bff;
+}
+
+.dark-theme .chat-input {
+  background: #374151;
+  border: 1px solid #4a5568;
+  color: #f7fafc;
+}
+
+.dark-theme .chat-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25);
+}
+
+.dark-theme .chat-input:disabled {
+  background: #374151;
+  color: #9ca3af;
+}
+
+.dark-theme .send-button {
+  background: #667eea;
+}
+
+.dark-theme .send-button:hover:not(:disabled) {
+  background: #5a67d8;
+}
+
+.dark-theme .send-button:disabled {
+  background: #6b7280;
+}
+
+/* 헤더의 이메일 주소 텍스트 다크모드 스타일 */
+.dark-theme .chatbot-header div {
+  color: #e2e8f0 !important;
+}
+
+/* 다크모드에서 개발모드 디버그 텍스트 색상 */
+.dark-theme .message-time div {
+  color: #a0aec0 !important;
+}
+
+/* 메시지 컨테이너 배경 투명하게 */
+.dark-theme .message-content {
+  background: transparent !important;
+}
+
+/* 메시지 전체 컨테이너 배경 투명하게 */
+.dark-theme .message {
+  background: transparent !important;
 }
