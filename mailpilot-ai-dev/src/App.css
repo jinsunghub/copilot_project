@@ -1291,3 +1291,33 @@ input[type="checkbox"] {
   border-color: #667eea;
   background: rgba(26, 32, 44, 1);
 }
+
+/* =============================================== */
+/* 폰트 설정 클래스들 */
+/* =============================================== */
+
+/* 폰트 크기 클래스 */
+.size-10px * { font-size: 10px !important; }
+.size-11px * { font-size: 11px !important; }
+.size-12px * { font-size: 12px !important; }
+.size-13px * { font-size: 13px !important; }
+.size-14px * { font-size: 14px !important; }
+.size-15px * { font-size: 15px !important; }
+.size-16px * { font-size: 16px !important; }
+.size-18px * { font-size: 18px !important; }
+.size-20px * { font-size: 20px !important; }
+.size-22px * { font-size: 22px !important; }
+
+/* 폰트 종류 클래스 */
+.font-system * { font-family: system-ui, -apple-system, sans-serif !important; }
+.font-arial * { font-family: Arial, sans-serif !important; }
+.font-dotum * { font-family: '돋움', Dotum, sans-serif !important; }
+.font-malgun * { font-family: '맑은 고딕', 'Malgun Gothic', sans-serif !important; }
+.font-gulim * { font-family: '굴림', Gulim, sans-serif !important; }
+.font-batang * { font-family: '바탕', Batang, serif !important; }
+.font-gungsuh * { font-family: '궁서', Gungsuh, serif !important; }
+.font-times * { font-family: 'Times New Roman', Times, serif !important; }
+.font-helvetica * { font-family: Helvetica, Arial, sans-serif !important; }
+.font-verdana * { font-family: Verdana, Geneva, sans-serif !important; }
+.font-georgia * { font-family: Georgia, serif !important; }
+.font-courier * { font-family: 'Courier New', Courier, monospace !important; }

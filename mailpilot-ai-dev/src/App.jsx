@@ -75,7 +75,12 @@ const App = ({ email, appPassword, onLogout }) => {
     };
   }, [email]); // email 의존성 추가
   
-  
+  useEffect(() =>{
+    setViewingEmail(null);
+    setSelectedEmail(null);
+    setIsComposing(false);
+  }, [selectedTag]);
+
   const fetchUIFontSettings = async () => {
     try {
       const userEmail = email || localStorage.getItem('email');

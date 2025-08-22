@@ -6,7 +6,7 @@ const Chatbot = ({ email, appPassword }) => {
     {
       type: "bot",
       content:
-        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n🔧 **사용 가능한 기능:**\n• 문법/맞춤법 교정\n• 메일 검색 (사람별/키워드별)\n• AI 답장 생성",
+        "안녕하세요! 메일 관리 AI 어시스턴트입니다. 무엇을 도와드릴까요?\n\n🔧 **사용 가능한 기능:**\n• 문법/맞춤법 교정\n• 메일 검색 (사람별/키워드별)\n• AI 답장 생성\n• 애플리케이션 설정 변경 (테마, 폰트, 메일 설정)",
       timestamp: new Date(),
     },
   ]);
@@ -154,6 +154,14 @@ const Chatbot = ({ email, appPassword }) => {
             confidence: data.confidence || 0,
           };
           setMessages((prev) => [...prev, botMessage]);
+          
+          // 🎯 설정 변경 성공 시 UI 새로고침 이벤트 발생
+          if (data.action === "settings_control" && data.response && data.response.includes("✅")) {
+            console.log("[🔄 설정 새로고침] 설정 변경 성공 감지, UI 업데이트 중...");
+            setTimeout(() => {
+              window.dispatchEvent(new Event('settingsUpdated'));
+            }, 100); // 약간의 지연으로 안정적인 업데이트
+          }
         }
       } else {
         console.error("[❗챗봇 응답 오류]", data.error);
@@ -310,6 +318,24 @@ const Chatbot = ({ email, appPassword }) => {
             onClick={() => addGuidanceMessage("📊 **이메일 통계**\n\n궁금한 통계 정보를 입력해주세요.\n\n💡 **예시:**\n• '오늘 메일 몇 개?'\n• '이번주 메일 개수'\n• '총 메일 통계'\n• '어제 받은 메일 개수'\n• '이번달 메일 몇 개?'\n\n➡️ 아래 입력창에 궁금한 통계를 입력하세요!")}
           >
             메일 통계
+          </button>
+          <button
+            className="suggestion-btn"
+            onClick={() => addGuidanceMessage("🌙 **테마 설정**\n\n테마를 변경하려면 아래 예시를 참고하세요.\n\n💡 **예시:**\n• '다크모드로 바꿔줘'\n• '라이트 테마로 변경해줘'\n• '테마를 어둡게 해줘'\n• '밝은 모드로 설정해줘'\n\n➡️ 아래 입력창에 원하는 테마를 입력하세요!")}
+          >
+            테마 설정
+          </button>
+          <button
+            className="suggestion-btn"
+            onClick={() => addGuidanceMessage("🔤 **폰트 설정**\n\n글꼴과 크기를 변경하려면 아래 예시를 참고하세요.\n\n💡 **폰트 크기 예시:**\n• '폰트 크기를 18px로 바꿔줘'\n• '글자 크기를 16px로 설정해줘'\n\n💡 **폰트 종류 예시:**\n• '글꼴을 맑은 고딕으로 변경해줘'\n• '폰트를 Arial로 바꿔줘'\n• '글꼴을 돋움으로 설정해줘'\n\n➡️ 아래 입력창에 원하는 폰트를 입력하세요!")}
+          >
+            폰트 설정
+          </button>
+          <button
+            className="suggestion-btn"
+            onClick={() => addGuidanceMessage("📧 **메일 설정**\n\n메일 관련 설정을 변경하려면 아래 예시를 참고하세요.\n\n💡 **Gmail 개수 설정:**\n• 'Gmail 메일을 50개씩 가져와줘'\n• '메일 가져오기 개수를 30개로 설정해줘'\n\n💡 **페이지 크기 설정:**\n• '페이지에 10개씩 보여줘'\n• '한 페이지에 5개씩 표시해줘'\n\n💡 **발신자 이름 설정:**\n• '발신자 이름을 김철수로 바꿔줘'\n• '내 이름을 박영희로 설정해줘'\n\n➡️ 아래 입력창에 원하는 설정을 입력하세요!")}
+          >
+            메일 설정
           </button>
         </div>
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./MailDetail.css";
 
 const MailDetail = ({ email, onDeleteEmail, onNextEmail, emailList }) => {
-  // 외부 콘텐츠 표시 설정
-  const [externalContent, setExternalContent] = useState('confirm'); // 'confirm', 'always'
-  const [showExternalContent, setShowExternalContent] = useState(false);
+  // 외부 콘텐츠 표시 설정 - 항상 표시로 기본 설정
+  const [externalContent, setExternalContent] = useState('always'); // 'confirm', 'always'
+  const [showExternalContent, setShowExternalContent] = useState(true);
   
   // 다음 메일 자동 표시 설정
   const [autoShowNext, setAutoShowNext] = useState(false);
@@ -30,16 +30,9 @@ const MailDetail = ({ email, onDeleteEmail, onNextEmail, emailList }) => {
       if (data.success && data.settings) {
         console.log('[📧 MailDetail] 읽기 설정 로드:', data.settings);
         
-        // 외부 콘텐츠 표시 설정 적용
-        if (data.settings.externalContent) {
-          console.log('[📧 MailDetail] 외부 콘텐츠 설정 적용:', data.settings.externalContent);
-          setExternalContent(data.settings.externalContent);
-          
-          // 'always'인 경우 자동으로 외부 콘텐츠 표시
-          if (data.settings.externalContent === 'always') {
-            setShowExternalContent(true);
-          }
-        }
+        // 외부 콘텐츠는 항상 표시하도록 강제 설정
+        setExternalContent('always');
+        setShowExternalContent(true);
         
         // 다음 메일 자동 표시 설정 적용
         if (data.settings.autoShowNext !== undefined) {
@@ -52,45 +45,9 @@ const MailDetail = ({ email, onDeleteEmail, onNextEmail, emailList }) => {
     }
   };
 
-  // 외부 콘텐츠 표시 허용
-  const handleShowExternalContent = () => {
-    setShowExternalContent(true);
-  };
-
-  // 외부 콘텐츠 포함 여부 확인
-  const hasExternalContent = (content) => {
-    if (!content) return false;
-    // 간단한 외부 링크/이미지 감지 (실제로는 더 정교한 로직 필요)
-    return content.includes('http://') || content.includes('https://') || content.includes('<img');
-  };
-
-  // 콘텐츠 처리 (외부 콘텐츠 숨김/표시)
+  // 콘텐츠 처리 - 항상 모든 콘텐츠 표시
   const processContent = (content) => {
-    if (!content) return content;
-    if (externalContent === 'always' || showExternalContent) {
-      return content; // 외부 콘텐츠 표시
-    }
-    
-    if (externalContent === 'never' || (externalContent === 'confirm' && !showExternalContent)) {
-      // 외부 콘텐츠 숨김 처리
-      let processedContent = content;
-      
-      // 외부 이미지 숨김
-      processedContent = processedContent.replace(
-        /<img[^>]*src=["'](https?:\/\/[^"']*\.(jpg|jpeg|png|gif|webp|svg))["'][^>]*>/gi, 
-        '<span style="background:#f0f0f0;padding:5px;border-radius:4px;display:inline-block;">[🚫 외부 이미지 차단됨]</span>'
-      );
-      
-      // iframe 숨김
-      processedContent = processedContent.replace(
-        /<iframe[^>]*src=["'](https?:\/\/[^"']*)["'][^>]*>.*?<\/iframe>/gi,
-        '<span style="background:#f0f0f0;padding:5px;border-radius:4px;display:inline-block;">[🚫 외부 콘텐츠 차단됨]</span>'
-      );
-      
-      return processedContent;
-    }
-    
-    return content;
+    return content; // 모든 콘텐츠를 그대로 표시
   };
 
   if (!email)
@@ -120,38 +77,6 @@ const MailDetail = ({ email, onDeleteEmail, onNextEmail, emailList }) => {
           </div>
         </div>
 
-        {/* 외부 콘텐츠 경고 배너 */}
-        {externalContent === 'confirm' && !showExternalContent && emails.some(e => hasExternalContent(e.summary)) && (
-          <div style={{
-            backgroundColor: '#fff3cd',
-            border: '1px solid #ffeaa7',
-            borderRadius: '8px',
-            padding: '12px',
-            margin: '16px 0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>⚠️</span>
-              <span>이 메일에 외부 이미지/링크가 포함되어 있습니다.</span>
-            </div>
-            <button 
-              onClick={handleShowExternalContent}
-              style={{
-                padding: '6px 12px',
-                border: '1px solid #f39c12',
-                borderRadius: '4px',
-                background: '#f39c12',
-                color: 'white',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              외부 콘텐츠 표시
-            </button>
-          </div>
-        )}
 
         <div className="emails-container">
           {emails.map((emailItem, index) => (
@@ -231,38 +156,6 @@ const MailDetail = ({ email, onDeleteEmail, onNextEmail, emailList }) => {
           </div>
         </div>
 
-        {/* 단일 메일 외부 콘텐츠 경고 배너 */}
-        {externalContent === 'confirm' && !showExternalContent && (hasExternalContent(singleEmail.summary) || hasExternalContent(singleEmail.attachment_summary)) && (
-          <div style={{
-            backgroundColor: '#fff3cd',
-            border: '1px solid #ffeaa7',
-            borderRadius: '8px',
-            padding: '12px',
-            margin: '16px 0',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>⚠️</span>
-              <span>이 메일에 외부 이미지/링크가 포함되어 있습니다.</span>
-            </div>
-            <button 
-              onClick={handleShowExternalContent}
-              style={{
-                padding: '6px 12px',
-                border: '1px solid #f39c12',
-                borderRadius: '4px',
-                background: '#f39c12',
-                color: 'white',
-                cursor: 'pointer',
-                fontSize: '12px'
-              }}
-            >
-              외부 콘텐츠 표시
-            </button>
-          </div>
-        )}
 
         <div className="ai-summary-section single">
           <div className="summary-header">
