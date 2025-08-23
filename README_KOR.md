@@ -309,9 +309,7 @@ A: 1. 새로고침 버튼 클릭
 A: 1. 파일 형식 지원 여부 확인
    2. 파일 크기 제한 (10MB 이하)
    3. OCR/YOLO 서비스 상태 확인
-
-
----
+```
 
 ## 라이선스
 
@@ -326,7 +324,7 @@ Copyright (c) 2024 MailPilot AI Team
 | 김관영 | kwandol02@naver.com        | kwandol02@naver.com        |
 | 김진성 | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
 | 이상민 | haleeho2@naver.com         | haleeho2@naver.com         |
-
+```
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
