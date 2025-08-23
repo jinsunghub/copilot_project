@@ -324,7 +324,7 @@ Copyright (c) 2024 MailPilot AI Team
 | 김관영 | kwandol02@naver.com        | kwandol02@naver.com        |
 | 김진성 | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
 | 이상민 | haleeho2@naver.com         | haleeho2@naver.com         |
-```
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
