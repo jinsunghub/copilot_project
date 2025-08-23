@@ -1,181 +1,329 @@
-📄 If you need the Korean version of this README, please see **README_KOR.md**.
+# E.M.Pilot 
 
-# E.M.Pilot
+**Local NPU-based AI Email Management Desktop Application**
 
-**AI Email Management Desktop App**
-
-> An open-source on-device conversational AI email client desktop application that leverages your local PC's NPU
+A Tauri + React based on-device AI email client that provides smart email management environment by integrating with Gmail.
 
 ---
 
-## Application Description
+## Key Features
 
-MailPilot AI is an AI email management application that integrates with Gmail accounts to automatically classify and summarize emails, generate AI-based auto-replies, and other features. It adds convenience to email usage by providing functions that email users have not been able to utilize before, offering these features through a conversational interface.
+### AI-Powered Core Functions
+- **AI Email Summarization**: Automatically summarizes key content of each email
+- **Smart Classification**: AI automatically categorizes emails by category
+- **AI Auto Reply Generation**: Intent-based customized reply generation
+- **Automatic Task Extraction**: Automatically detects meetings, deadlines, and tasks from emails
+- **Conversational AI Search**: Natural language email search and management
 
-This desktop app was developed using React and Flask frameworks with Tauri, running AI models on Qualcomm Copilot+ PC NPUs to minimize dependency on existing cloud-based environments.
+### Advanced Attachment Analysis
+- **Document Content Summarization**: Automatic analysis of PDF, Word, PPT, Excel files
+- **Image OCR**: Automatic text extraction from images
+- **Object Recognition**: YOLO-based object detection in images
+- **Integrated Attachment Management**: Summary and classification of all attachments
 
-### Key Features Using AI Models
-
-| Feature | Description |
-| ------- | ----------- |
-| Spam/Important/Sent/Self-sent/Filtered | Automatically classify and view emails by tabs |
-| Email Summary View | Preview email content summaries in the list view |
-| Sender Search Function | Filter emails by sender |
-| To-Do (Task Management) Display | Automatically organize and provide user's key schedules |
-| Attachment Summary Function | Automatically summarize attached images and document content |
-| AI Auto-Reply Generation | Generate automatic replies for received emails |
-| Conversational Interface | Grammar correction, calendar content addition, search functions, and other email management features |
-
----
-
-## Team Members
-
-| Name | Email | Qualcomm ID |
-|------|-------|-------------|
-| 최수운 | csw21c915@gmail.com | csw21c915@gmail.com |
-| 강인태 | rkddlsxo12345@naver.com | rkddlsxo12345@naver.com |
-| 김관영 | kwandol02@naver.com | kwandol02@naver.com |
-| 김진성 | jinsung030405@gmail.com | jinsung030405@gmail.com |
-| 이상민 | haleeho2@naver.com | haleeho2@naver.com |
+### User Experience
+- **Dark/Light Theme**: System settings integration support
+- **Multi-language Support**: Korean/English support
+- **Detailed Settings**: Fine customization of fonts, themes, email behavior, etc.
 
 ---
 
-## Tech Stack
+## Technology Stack
 
-### Frontend (Tauri Desktop App)
+### Frontend
 - **Tauri**: Cross-platform desktop app framework
-- **React**: Web framework
-- **HTML/CSS/JavaScript**: Web-based UI design languages
+- **React**: Modern web framework
+- **Vite**: Fast development server and build tool
+- **CSS3**: Advanced animations and gradient design
+
+### AI & Backend Integration
+- **Qualcomm NPU**: Local AI model execution 
+- **Hugging Face**: Current cloud AI model utilization
+- **YOLO**: Real-time object detection
+- **Tesseract OCR**: Image text extraction
 
 ---
 
-## Application Installation and Execution Guide
-
-### 0. Gmail Account Setup
-- Gmail account
-- **2-step verification activation** required
-- **App password** creation (create at [Google Account Settings](https://myaccount.google.com/apppasswords))
-- **Store the app password separately**
-
-### 1. Backend API Server Installation and Execution
-For backend installation and execution instructions, please check the following repository:
-
-**[MailPilot Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git)**
-
-### 2. Web Environment Installation and Execution (Web Usage)
-
-**1. Clone Project**
-```bash
-git clone https://github.com/jinsunghub/copilot_project.git
-cd copilot_project
-cd mailpilot-ai-dev
-```
-
-**2. Install Dependencies**
-```bash
-npm install
-```
-
-**3. Run Development Server**
-```bash
-npm run dev
-```
-
-**4. Start React Web**
-```bash
-npm start
-```
-
-### 3. App Creation and Execution (App Usage)
-
-**1. Clone Project**
-```bash
-git clone https://github.com/jinsunghub/copilot_project.git
-cd copilot_project
-cd mailpilot-ai-dev
-```
-
-**2. Install Dependencies**
-```bash
-npm install
-```
-
-**3. Install Tauri**
-```bash
-rustup-init.exe
-npm install -g @tauri-apps/cli
-npm install @tauri-apps/api
-tauri init
-```
-- App name: E.M.PILOT
-- Window title: E.M.PILOT
-- Web assets location: ../dist
-- Dev server URL: http://localhost:5173
-- Frontend run command: npm run dev
-- Frontend build command: npm run build
-
-**4. Run Tauri and Change App Location**
-Process for app creation, unnecessary after app is created
-```bash
-tauri dev
-```
-Change com.tauri.dev to com.yourname.desktop in src-tauri/tauri.conf.json file
-
-**5. Tauri File Settings**
-After changing web-based files, you can rebuild and use
-```bash
-tauri build
-```
-Administrator privileges recommended. The app is located at `C:\copilotAI\copilot_project\mailpilot-ai-dev\src-tauri\target\release`.
-
----
-
-## Execution/Usage Guide
-
-### Login
-1. Enter Gmail address in the desktop app
-2. Enter Gmail app password (not regular password!)
-3. Click login button
+## Detailed Features
 
 ### Email Management
-- Fetch recent emails with the 'Refresh' button
-- Check emails classified by tabs and task management (Spam/Important/Sent, etc.)
-- Check summary content in the email list
-- Use various functions through conversational interface
 
-### AI Feature Usage
-- **Reply Generation**: Select email and click "AI Reply" button
-- **Summary and Classification**: Automatically provide email content and attachment summaries, email keyword classification content
-- **Chatbot**: Grammar correction, email search, task addition, search, and various other features for email users
+**Gmail Integration**
+- Two-factor authentication secure connection
+- Separate display of inbox/sent emails
+- Smart filtering (automatic classification of important/spam/security alerts)
+- Real-time refresh button
+- Page count configuration
+
+### AI Functions
+
+**Email Summarization**
+- Extract key content from long emails
+- Automatic analysis of attachment content
+- AI reply generation (context awareness)
+- Intent-based replies (style adapted to user intent)
+- Chatbot assistant (natural language email management)
+
+### Task Management
+
+**Automatic Task Extraction**
+- Detection of meetings/deadlines from emails
+- Priority-based task management
+- Calendar view (monthly task visualization)
+- Completion/deletion management
+- Duplicate cleanup (automatic removal of duplicate tasks)
+
+### Advanced Search
+
+**Natural Language Search**
+- Support for searches like "Mr. Kim's email from yesterday"
+- Date range search (specific period email search)
+- Sender-based search (name/email based)
+- Keyword search (subject/content integrated)
+- Email statistics (count/trend analysis)
 
 ---
 
-## ⚠️ Important Notes
+## Installation and Execution
+
+### Prerequisites
+
+1. **Node.js 18+** installation
+2. **Rust** and **Tauri CLI** installation
+3. **Gmail Account Setup**:
+   - Enable two-factor authentication
+   - Generate app password (https://myaccount.google.com/apppasswords)
+4. **Backend Server** execution (separate repository)
+
+### Installation Process
+
+```bash
+# 1. Clone project
+git clone https://github.com/jinsunghub/copilot_project.git
+cd copilot_project/mailpilot-ai-dev
+
+# 2. Install dependencies
+npm install
+
+# 3. Tauri environment setup (first time only)
+npm install -g @tauri-apps/cli
+npm install @tauri-apps/api
+```
+
+### Development Mode Execution
+
+```bash
+# Web development server (test in browser)
+npm run dev
+
+# Tauri desktop app (development mode)
+npm run tauri dev
+```
+
+### Production Build
+
+```bash
+# Build deployment app
+npm run tauri build
+
+# Built app location
+# Windows: src-tauri/target/release/E.M.Pilot.exe
+# macOS: src-tauri/target/release/bundle/macos/E.M.Pilot.app
+# Linux: src-tauri/target/release/e-m-pilot
+```
+
+---
+
+## Usage Guide
+
+### Initial Login
+1. Launch application
+2. Enter Gmail address
+3. Enter **Gmail app password** (not regular password!)
+4. Complete login
+
+### Email Management
+- **Refresh**: Get new emails with refresh button in top right
+- **Tab Switching**: Select inbox/sent/important emails from left sidebar
+- **Search**: Enter keywords in top search bar
+- **Detail View**: Check AI summary of selected email in right panel
+
+### AI Feature Utilization
+- **Reply Generation**: "AI Reply" button in email detail view
+- **Intent Setting**: Enter "politely decline", "schedule meeting" etc. when generating reply
+- **Chatbot Usage**: Ask questions in natural language in "Chatbot AI" tab in sidebar
+
+### Task Management
+- **Auto Extraction**: "Extract tasks from emails" in "Task Management" tab in sidebar
+- **Manual Addition**: Add directly with "Add Task" button
+- **Status Management**: Toggle complete/incomplete with checkboxes
+- **View Switching**: Choose between list/calendar view
+
+### Settings Customization
+- **Theme**: Settings > Theme > Light/Dark/Auto
+- **Font**: Settings > Writing > Font type/size
+- **Signature**: Settings > Signature Management > HTML/Text signature setup
+- **Behavior**: Emails per page, auto refresh, etc.
+
+---
+
+## Settings Options
+
+### Appearance Settings
+- **Theme Mode**: Light/Dark/Follow System
+- **Font Settings**: Type (Malgun Gothic, Arial, etc.) and size (10px~22px)
+- **UI Language**: Korean/English
+
+### Email Behavior
+- **Import Count**: Number of emails to fetch from Gmail (default 5)
+- **Display Per Page**: Number of emails to show per page (default 50)
+- **External Content**: Auto-loading settings for images/links
+
+### Composition Settings
+- **Signature Management**: HTML/Text signature setup
+- **Sender Name**: Name to display when sending emails
+- **Include Me**: Auto-include in CC/BCC settings
+- **Preview**: Enable preview before sending
+
+---
+
+## Advanced Features
+
+### AI Chatbot Commands
+
+**Grammar Correction**
+```
+Please correct "Hello. I think I can't attend the meeting today"
+```
+
+**Email Search**
+```
+Show me Mr. Kim's emails from yesterday
+Latest 5 emails about meetings
+Search for project updates
+```
+
+**Statistics Check**
+```
+How many emails today?
+Number of emails received this week
+```
+
+**Settings Change**
+```
+Switch to dark mode
+Change font size to 18px
+```
+
+### Attachment Analysis
+- **PDF**: Document summary and text extraction
+- **Word/PPT**: Content summary and keyword extraction
+- **Excel**: Sheet-wise data summary
+- **Images**: OCR text extraction + object recognition
+
+### Calendar Integration
+- Visualize schedules extracted from emails in calendar view
+- Monthly/weekly view support
+- Color coding by deadline (today/overdue/upcoming)
+
+---
+
+## Important Notes
 
 ### Security
-- **Never use your regular Gmail password**
-- Must use app password
-- Gmail 2-step verification must be activated
+- **Absolutely prohibit using regular Gmail password**
+- Must generate and use Gmail app password
+- Two-factor authentication activation required
 
 ### System Requirements
-- Backend API server must be running first
-- Internet connection required (for Gmail access and AI model usage)
+- **OS**: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
+- **RAM**: Minimum 4GB (recommended 8GB)
+- **Storage**: 500MB or more
+- **Network**: Stable internet connection
 
-### Token Issuance Required
-- Currently requires tokens from Hugging Face due to lack of Qualcomm devices, as specified in app.py
-- Need to obtain tokens from Nomic and Hugging Face and modify accordingly
-- Future plans to use Qualcomm AI hub to download models for local use
+### Backend Integration
+- **Port**: Backend server must run on `localhost:5001`
+- **CORS**: Confirm CORS settings between frontend and backend
+- **Session**: Cookie support required for login session management
 
 ---
 
-## License
+## Performance Optimization
 
-### MIT License
+### Memory Management
+- Optimize memory usage with email list pagination
+- Improve initial loading speed with lazy loading of attachments
+- Image compression and caching system
+
+### Network Optimization
+- Minimize Gmail API calls
+- Efficient data transfer through batch requests
+- Partial offline caching support
+
+---
+
+## Future Development Plans
+
+### v2.0 Planned Features
+- Mobile app (React Native)
+- NAVER Mail integration
+- Voice command support
+- Team collaboration features
+
+### v1.5 Planned Features
+- Support for more file formats (HWP, Pages, etc.)
+- Advanced search filters
+- Detailed email analysis reports
+- Custom theme creation tools
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**Q: Can't log in**
+```
+A: 1. Confirm Gmail two-factor authentication activation
+   2. Confirm use of app password (16 digits)
+   3. Check backend server execution status
+```
+
+**Q: AI features not working**
+```
+A: 1. Check internet connection
+   2. Check AI model status on backend server
+   3. Confirm Hugging Face API token settings
+   4. Confirm Nomic token settings
+```
+
+**Q: Emails not loading**
+```
+A: 1. Click refresh button
+   2. Logout and re-login
+   3. Restart backend server
+```
+
+**Q: Attachment analysis not working**
+```
+A: 1. Check file format support
+   2. File size limit (under 10MB)
+   3. Check OCR/YOLO service status
+```
+
+## License
 
 ```
 MIT License
 
 Copyright (c) 2024 MailPilot AI Team
+| Name          | Email                      | Qualcomm ID                |
+|---------------|----------------------------|----------------------------|
+| Choi Suwoon   | csw21c915@gmail.com        | csw21c915@gmail.com        |
+| Kang Intae    | rkddlsxo12345@naver.com    | rkddlsxo12345@naver.com    |
+| Kim Gwanyoung | kwandol02@naver.com        | kwandol02@naver.com        |
+| Kim Jinsung   | jinsung030405@gmail.com    | jinsung030405@gmail.com    |
+| Lee Sangmin   | haleeho2@naver.com         | haleeho2@naver.com         |
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -190,24 +338,22 @@ copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+AUTHORS OR LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ```
 
-### Other Open Source Licenses
+---
 
+## Other Open Source Licenses
 This project uses the following open source libraries:
 
 **Frontend**
-
-- **Tauri**: MIT License
-- **Bootstrap**: MIT License
-- **Font Awesome**: Font Awesome Free License
+- Tauri: MIT License
+- Bootstrap: MIT License
+- Font Awesome: Font Awesome Free License
 
 **Backend**
+For detailed backend license information, please refer to the backend repository.
 
-For detailed backend license information, please refer to the [Backend Repository](https://github.com/rkddlsxo/MailPilot_back.git).
-
-The complete license text for each library can be found in the official repositories of each project.
+The full license text for each library can be found in the official repository of each project.
