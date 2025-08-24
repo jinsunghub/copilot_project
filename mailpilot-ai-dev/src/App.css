@@ -162,7 +162,7 @@ body {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */ /* 제거: 텍스트 흐림 현상 방지 */
 }
 
 .mail-item::before {
@@ -189,24 +189,29 @@ body {
 }
 
 .mail-subject {
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 700 !important;
+  font-size: 17px !important;
   margin-bottom: 8px;
-  color: #2d3748;
+  color: #1a1a1a !important;
   line-height: 1.4;
+  text-shadow: 0.3px 0.3px 0.8px rgba(0, 0, 0, 0.2) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
 }
 
 .mail-from {
   font-size: 14px;
-  color: #667eea;
-  font-weight: 500;
+  color: #1e3a8a;
+  font-weight: 600;
   margin-bottom: 4px;
 }
 
 .mail-date {
   font-size: 13px;
-  color: #a0aec0;
-  font-weight: 400;
+  color: #374151;
+  font-weight: 500;
 }
 
 .classification-label {
