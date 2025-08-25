@@ -229,7 +229,7 @@ const Chatbot = ({ email, appPassword }) => {
       <div className="chatbot-header">
         <h2>🤖 AI 어시스턴트</h2>
         <p>문법 교정, 메일 검색, AI 답장 생성을 도와드립니다</p>
-        <div style={{ fontSize: "12px", color: "#666", marginTop: "5px" }}>
+        <div className="chatbot-email">
           👤 {email}
         </div>
       </div>

@@ -381,7 +381,7 @@
   padding: 16px 24px;
   cursor: pointer;
   transition: background 0.2s;
-  color: #666;
+  color: #333;
   font-weight: 500;
 }
 
@@ -626,76 +626,117 @@
 }
 
 /* 다크 테마 지원 */
-@media (prefers-color-scheme: dark) {
-  .settings-container {
-    background: #1a1a1a;
-    color: #fff;
-  }
+.dark-theme .settings-container {
+  background: #1a1a1a;
+  color: #fff;
+}
 
-  .settings-header {
-    border-bottom-color: #333;
-  }
+.dark-theme .settings-header {
+  border-bottom-color: #333;
+}
 
-  .settings-header h2 {
-    color: #fff;
-  }
+.dark-theme .settings-header h2 {
+  color: #fff;
+}
 
-  .close-btn {
-    color: #aaa;
-  }
+.dark-theme .close-btn {
+  color: #aaa;
+}
 
-  .close-btn:hover {
-    color: #fff;
-  }
+.dark-theme .close-btn:hover {
+  color: #fff;
+}
 
-  .settings-sidebar {
-    background: #0f0f0f;
-    border-right-color: #333;
-  }
+.dark-theme .settings-sidebar {
+  background: #0f0f0f;
+  border-right-color: #333;
+}
 
-  .settings-sidebar li {
-    color: #aaa;
-  }
+.dark-theme .settings-sidebar li {
+  color: #aaa;
+}
 
-  .settings-sidebar li:hover {
-    background: #222;
-  }
+.dark-theme .settings-sidebar li:hover {
+  background: #222;
+}
 
-  .settings-sidebar li.active {
-    background: #1a1a1a;
-    color: #4285f4;
-  }
+.dark-theme .settings-sidebar li.active {
+  background: #1a1a1a;
+  color: #4285f4;
+}
 
-  .settings-section h3 {
-    color: #fff;
-    border-bottom-color: #333;
-  }
+.dark-theme .settings-section h3 {
+  color: #fff;
+  border-bottom-color: #333;
+}
 
-  .setting-item label {
-    color: #ccc;
-  }
+.dark-theme .setting-item label {
+  color: #ccc;
+}
 
-  .setting-item input[type="text"],
-  .setting-item input[type="number"],
-  .setting-item select {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #fff;
-  }
+.dark-theme .setting-item input[type="text"],
+.dark-theme .setting-item input[type="number"],
+.dark-theme .setting-item select {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #fff;
+}
 
-  .settings-footer {
-    border-top-color: #333;
-  }
+.dark-theme .settings-footer {
+  border-top-color: #333;
+}
 
-  .btn-cancel {
-    background: #2a2a2a;
-    border-color: #444;
-    color: #ccc;
-  }
+.dark-theme .btn-cancel {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #ccc;
+}
 
-  .btn-cancel:hover {
-    background: #333;
-  }
+.dark-theme .btn-cancel:hover {
+  background: #333;
+}
+
+/* 다크모드 설정 섹션 스타일 */
+.dark-theme .settings-main {
+  background: #1a1a1a;
+}
+
+.dark-theme .settings-section {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
+
+.dark-theme .settings-section h3 {
+  color: #fff;
+  border-bottom-color: #444;
+}
+
+.dark-theme .settings-section h4 {
+  color: #fff;
+}
+
+.dark-theme .setting-label {
+  color: #ccc;
+}
+
+.dark-theme .radio-option,
+.dark-theme .checkbox-option {
+  color: #ccc;
+}
+
+.dark-theme .detailed-settings .setting-item input[type="text"],
+.dark-theme .detailed-settings .setting-item input[type="number"],
+.dark-theme .detailed-settings .setting-item select,
+.dark-theme .detailed-settings .setting-item textarea {
+  background: #333;
+  border-color: #555;
+  color: #fff;
+}
+
+.dark-theme .detailed-settings .setting-item input[type="date"] {
+  background: #333;
+  border-color: #555;
+  color: #fff;
 }
 
 /* 새로운 UX 개선 스타일 */

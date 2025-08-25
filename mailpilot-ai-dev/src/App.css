@@ -192,7 +192,7 @@ body {
   font-weight: 700 !important;
   font-size: 17px !important;
   margin-bottom: 8px;
-  color: #1a1a1a !important;
+  color: #000000 !important;
   line-height: 1.4;
   text-shadow: 0.3px 0.3px 0.8px rgba(0, 0, 0, 0.2) !important;
   -webkit-font-smoothing: antialiased !important;
@@ -549,9 +549,6 @@ input[type="checkbox"] {
     color: #e2e8f0;
   }
 
-  .mail-subject {
-    color: #e2e8f0;
-  }
 }
 
 /* ========================================= */
@@ -1177,7 +1174,7 @@ input[type="checkbox"] {
 }
 
 .dark-theme .mail-subject {
-  color: #f7fafc;
+  color: #f7fafc !important;
 }
 
 .dark-theme .mail-from {
