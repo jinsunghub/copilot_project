@@ -1,6 +1,6 @@
 # E.M.Pilot 
 
-**Qualcoom 로컬 NPU 기반 AI 이메일 관리 데스크탑 애플리케이션**
+**Qualcom 로컬 NPU 기반 AI 이메일 관리 데스크탑 애플리케이션**
 
 Tauri + React 기반의 on-device AI 이메일 클라이언트로, Gmail과 연동하여 퀄컴 NPU를 활용하여 저전력, 고성능 환경에서 스마트한 이메일 관리 환경을 제공합니다.
 
