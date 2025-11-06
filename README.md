@@ -17,7 +17,7 @@ A Tauri + React based on-device AI email client that provides smart email manage
 
 ### Advanced Attachment Analysis
 - **Document Content Summarization**: Automatic analysis of PDF, Word, PPT, Excel files
-- **Image OCR**: Automatic text extraction from images
+- **Detect Text form Image**: Automatic text extraction from images
 - **Object Recognition**: YOLO-based object detection in images
 - **Integrated Attachment Management**: Summary and classification of all attachments
 
@@ -293,8 +293,7 @@ A: 1. Confirm Gmail two-factor authentication activation
 ```
 A: 1. Check internet connection
    2. Check AI model status on backend server
-   3. Confirm Hugging Face API token settings
-   4. Confirm Nomic token settings
+   3. Confirm Nomic token settings
 ```
 
 **Q: Emails not loading**
@@ -308,7 +307,7 @@ A: 1. Click refresh button
 ```
 A: 1. Check file format support
    2. File size limit (under 10MB)
-   3. Check OCR/YOLO service status
+   3. Check OCR/YOLO service & model status
 ```
 
 ## License
