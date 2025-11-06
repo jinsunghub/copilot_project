@@ -2,7 +2,7 @@
 
 **Local NPU-based AI Email Management Desktop Application**
 
-A Tauri + React based on-device AI email client that provides smart email management environment by integrating with Gmail.
+An on-device AI email client built with Tauri and React, integrated with Gmail, providing an intelligent email management experience optimized for low-power, high-performance environments using the Qualcomm NPU.
 
 ---
 
