@@ -36,7 +36,7 @@ A Tauri + React based on-device AI email client that provides smart email manage
 - **Vite**: Fast development server and build tool
 - **CSS3**: Advanced animations and gradient design
 
-### AI model
+### Qualcomm AI model
 - **YOLOv8-Detection**: Real-time object detection on images
 - **Qwen2-7B-Instruct**: User command processing and email summarization
 - **EasyOCR (Detector + Recognizer)**: Text extraction from images and attachments
