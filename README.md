@@ -36,11 +36,11 @@ A Tauri + React based on-device AI email client that provides smart email manage
 - **Vite**: Fast development server and build tool
 - **CSS3**: Advanced animations and gradient design
 
-### AI & Backend Integration
-- **Qualcomm NPU**: Local AI model execution 
-- **Hugging Face**: Current cloud AI model utilization
-- **YOLO**: Real-time object detection
-- **Tesseract OCR**: Image text extraction
+### AI model
+- **YOLOv8-Detection**: Real-time object detection on images
+- **Qwen2-7B-Instruct**: User command processing and email summarization
+- **EasyOCR (Detector + Recognizer)**: Text extraction from images and attachments
+- **Nomic-Embed-Text**: Text intent classification
 
 ---
 
