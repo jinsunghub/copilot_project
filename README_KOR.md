@@ -1,8 +1,8 @@
 # E.M.Pilot 
 
-**로컬 NPU 기반 AI 이메일 관리 데스크탑 애플리케이션**
+**Qualcoom 로컬 NPU 기반 AI 이메일 관리 데스크탑 애플리케이션**
 
-Tauri + React 기반의 on-device AI 이메일 클라이언트로, Gmail과 연동하여 스마트한 이메일 관리 환경을 제공합니다.
+Tauri + React 기반의 on-device AI 이메일 클라이언트로, Gmail과 연동하여 퀄컴 NPU를 활용하여 저전력, 고성능 환경에서 스마트한 이메일 관리 환경을 제공합니다.
 
 ---
 
@@ -17,8 +17,8 @@ Tauri + React 기반의 on-device AI 이메일 클라이언트로, Gmail과 연�
 
 ### 첨부파일 고급 분석
 - **문서 내용 요약**: PDF, Word, PPT, Excel 파일 자동 분석
-- **이미지 OCR**: 이미지 내 텍스트 자동 추출
-- **객체 인식**: YOLO 기반 이미지 내 객체 탐지
+- **이미지 내 텍스트 추출**: 이미지 내 텍스트 자동 추출
+- **이미지 내 객체 인식**: YOLO 기반 이미지 내 객체 탐지
 - **통합 첨부파일 관리**: 모든 첨부파일 요약 및 분류
 
 ### 사용자 경험
@@ -36,11 +36,11 @@ Tauri + React 기반의 on-device AI 이메일 클라이언트로, Gmail과 연�
 - **Vite**: 빠른 개발 서버 및 빌드 도구
 - **CSS3**: 고급 애니메이션 및 그래디언트 디자인
 
-### AI & Backend 연동
-- **Qualcomm NPU**: 로컬 AI 모델 실행 
-- **Hugging Face**: 현재 클라우드 AI 모델 활용
-- **YOLO**: 실시간 객체 탐지
-- **Tesseract OCR**: 이미지 텍스트 추출
+### Qualcom AI 모델 
+- **YOLOv8-Detection**: 실시간 이미지 객체 탐지 탐지
+- **Qwen2-7B-Instruct** : 사용자 Command 및 이메일 요약
+- **EasyOCR(Detector + Recoginzer)**: 이미지 및 첨부파일 텍스트 추출
+- **Nomic-Embed-Text*** : 텍스트 의도 분류
 
 ---
 
